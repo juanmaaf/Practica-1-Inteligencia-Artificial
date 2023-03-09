@@ -10,6 +10,13 @@ class ComportamientoJugador : public Comportamiento{
     ComportamientoJugador(unsigned int size) : Comportamiento(size){
       // Constructor de la clase
       // Dar el valor inicial a las variables de estado
+
+      last_action = actIDLE;
+      current_state = current_state.col = 99;
+      current_state.brujula = norte;
+      girar_derecha = false;
+      bien_situado = false;
+
     }
 
     ComportamientoJugador(const ComportamientoJugador & comport) : Comportamiento(comport){}
@@ -21,7 +28,11 @@ class ComportamientoJugador : public Comportamiento{
   private:
   
   // Declarar aquí las variables de estado
-
+  
+  state current_state;
+  Action last_action;
+  bool girar_derecha;
+  bool bien_situado;
 };
 
 #endif

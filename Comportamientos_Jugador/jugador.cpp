@@ -34,7 +34,75 @@ Action ComportamientoJugador::think(Sensores sensores){
 	cout << "Vida: " << sensores.vida << endl;
 	cout << endl;
 
+	switch(last_action){
+		case actFORWARD:
+			switch(current_state.brujula){
+				case norte:
+					current_state.fil--;
+				break;
+				case noroeste:
+					current_state.fil--;
+					current_state.col--;
+				break;
+				case oeste:
+					current_state.col--;
+				break;
+				case suroeste:
+					current_state.col--;
+					current_state.fil++;
+				break;
+				case sur:
+					current_state.fil++;
+				break;
+				case sureste:
+					current_state.col++;
+					current_state.fil++;
+				break;
+				case este:
+					current_state.col++;
+				break;
+				case noreste:
+					current_state.col++;
+					current_state.fil--;
+				break;
+			}
+		break;
+		case actTURN_SL:
+			current_state.brujula = static_cast<Orientacion>((current_state.brujula+7)%8);
+		break;
+		case actTURN_SR:
+			current_state.brujula = static_cast<Orientacion>((current_state.brujula+1)%8);
+		break;
+		case actTURN_BL:
+			current_state.brujula = static_cast<Orientacion>((current_state.brujula+5)%8);
+		break;
+		case actTURN_BR:
+			current_state.brujula = static_cast<Orientacion>((current_state.brujula+3)%8);
+		break;
+	}
 
+	if((sensores.terreno[2] == 'T' or sensores.terreno[2] == 'S' or sensores.terreno[2] == 'G') and sensores.superficie[2] = '_'){
+		action = actFORWARD;
+	}else if(!girar_derecha){
+		action = actTURN_SL;
+		girar_derecha = (rand()%2) == 0;
+	}else{
+		action = actTURN_SR;
+		girar_derecha = (rand()%2) == 0;
+	}
+
+	if(sensores.terreno[0] == 'G' and !bien_situado){
+		bien_situado = true;
+		current_state.fil = sensores.posF;
+		current_state.col = sensores.posC;
+		current_state.brujula = sensores.sentido;
+	}
+
+	if(bien_situado){
+		mapaResultado[current_state.fil][current_state.col] = sensores.terreno[0];
+	}
+
+	last_action = action;
 	// Determinar el efecto de la ultima accion enviada
 	return accion;
 }
