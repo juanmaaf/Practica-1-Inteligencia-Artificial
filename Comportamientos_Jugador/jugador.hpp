@@ -1,14 +1,14 @@
 #ifndef COMPORTAMIENTOJUGADOR_H
 #define COMPORTAMIENTOJUGADOR_H
 
-#include "/comportamientos/comportamiento.hpp"
+#include "comportamientos/comportamiento.hpp"
 using namespace std;
 
 struct state{
   int fil;
   int col;
   Orientacion brujula;
-}
+};
 
 class ComportamientoJugador : public Comportamiento{
 
@@ -18,7 +18,7 @@ class ComportamientoJugador : public Comportamiento{
       // Dar el valor inicial a las variables de estado
 
       last_action = actIDLE;
-      current_state = current_state.col = 99;
+      current_state.fil = current_state.col = 99;
       current_state.brujula = norte;
 
     }

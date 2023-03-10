@@ -1,0 +1,114 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "2.8"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Motor_Grafico_Belkan",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "GLUILib::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-GLUILib-Debug-09ee8c4422ae3fa9d851.json",
+					"name" : "GLUILib",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "comportamientosLib::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-comportamientosLib-Debug-692cc8afbcc4589a7c6e.json",
+					"name" : "comportamientosLib",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "modelosBelkanLib::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-modelosBelkanLib-Debug-bfad9e7954d623878367.json",
+					"name" : "modelosBelkanLib",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "motorLib::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-motorLib-Debug-550846fbf90c3d691791.json",
+					"name" : "motorLib",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "obj3DLib::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-obj3DLib-Debug-e1d2b36831f8d20488f7.json",
+					"name" : "obj3DLib",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "practica1::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-practica1-Debug-ace7c9ba83eb893c8624.json",
+					"name" : "practica1",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "practica1SG::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-practica1SG-Debug-68a4787f114856bacf89.json",
+					"name" : "practica1SG",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/juanmaaf/Escritorio/IA/P1/practica1/build",
+		"source" : "/home/juanmaaf/Escritorio/IA/P1/practica1"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

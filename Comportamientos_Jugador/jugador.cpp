@@ -82,12 +82,12 @@ Action ComportamientoJugador::think(Sensores sensores){
 	}
 
 	if((sensores.terreno[2] == 'T' or sensores.terreno[2] == 'S') and sensores.superficie[2] = '_'){
-		action = actFORWARD;
+		accion = actFORWARD;
 	}else{
-		action = actTURN_SR;
+		accion = actTURN_SR;
 	}
 
-	last_action = action;
+	last_action = accion;
 
 	// Determinar el efecto de la ultima accion enviada
 	return accion;
