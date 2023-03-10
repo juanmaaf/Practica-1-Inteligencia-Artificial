@@ -81,7 +81,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 		break;
 	}
 
-	if((sensores.terreno[2] == 'T' or sensores.terreno[2] == 'S') and sensores.superficie[2] = '_'){
+	if((sensores.terreno[2] == 'T' or sensores.terreno[2] == 'S') and sensores.superficie[2] == '_'){
 		accion = actFORWARD;
 	}else{
 		accion = actTURN_SR;
