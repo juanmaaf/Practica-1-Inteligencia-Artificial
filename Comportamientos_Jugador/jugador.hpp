@@ -1,7 +1,7 @@
 #ifndef COMPORTAMIENTOJUGADOR_H
 #define COMPORTAMIENTOJUGADOR_H
 
-#include "comportamientos/comportamiento.hpp"
+#include "/comportamientos/comportamiento.hpp"
 using namespace std;
 
 struct state{

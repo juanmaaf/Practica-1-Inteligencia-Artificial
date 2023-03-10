@@ -87,17 +87,6 @@ Action ComportamientoJugador::think(Sensores sensores){
 		action = actTURN_SR;
 	}
 
-	if(sensores.terreno[0] == 'G' and !bien_situado){
-		bien_situado = true;
-		current_state.fil = sensores.posF;
-		current_state.col = sensores.posC;
-		current_state.brujula = sensores.sentido;
-	}
-
-	if(bien_situado){
-		mapaResultado[current_state.fil][current_state.col] = sensores.terreno[0];
-	}
-
 	last_action = action;
 
 	// Determinar el efecto de la ultima accion enviada
