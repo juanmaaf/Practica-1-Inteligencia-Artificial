@@ -103,6 +103,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 	}
 
 	last_action = action;
+	//prueba
 	// Determinar el efecto de la ultima accion enviada
 	return accion;
 }
