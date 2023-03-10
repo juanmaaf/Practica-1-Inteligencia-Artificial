@@ -92,14 +92,58 @@ Action ComportamientoJugador::think(Sensores sensores){
 		mapaResultado[current_state.fil][current_state.col] = sensores.terreno[0];
 	}
 
+	sensores.colision = 0;
 	if ((sensores.terreno[2]== 'T' or sensores.terreno[2] == 'S' or sensores.terreno[2] == 'G') and sensores.superficie[2] == '_'){
 		accion = actFORWARD;
-	} else if (!girar_derecha){
-		accion = actTURN_SL;
-		girar_derecha = (rand()%2 ==0);
 	} else{
-		accion = actTURN_SR;
-		girar_derecha = (rand()%2 ==0);
+		if (sensores.terreno[2] == 'M'){
+			sensores.colision = 1;
+		}
+		int eleccion = rand()%4;
+		switch(eleccion){
+			case 0:
+				accion = actTURN_SL;
+			break;
+			case 1:
+				accion = actTURN_SR;
+			break;
+			case 2:
+				accion = actTURN_BL;
+			break;
+			case 3:
+				accion = actTURN_BR;
+			break;
+		}
+	}
+
+	if(sensores.colision){
+		switch(current_state.brujula){
+			case norte:
+				mapaResultado[current_state.fil - 1][current_state.col] = sensores.terreno[2];
+			break;
+			case noroeste:
+				mapaResultado[current_state.fil - 1][current_state.col - 1] = sensores.terreno[2];
+			break;
+			case oeste:
+				mapaResultado[current_state.fil][current_state.col - 1] = sensores.terreno[2];
+			break;
+			case suroeste:
+				mapaResultado[current_state.fil + 1][current_state.col - 1] = sensores.terreno[2];
+			break;
+			case sur:
+				mapaResultado[current_state.fil + 1][current_state.col] = sensores.terreno[2];
+			break;
+			case sureste:
+				mapaResultado[current_state.fil + 1][current_state.col - 1] = sensores.terreno[2];
+			break;
+			case este:
+				mapaResultado[current_state.fil][current_state.col + 1] = sensores.terreno[2];
+			break;
+			case noreste:
+				mapaResultado[current_state.fil - 1][current_state.col + 1] = sensores.terreno[2];
+			break;
+		}
+		
 	}
 
 	last_action = accion;
