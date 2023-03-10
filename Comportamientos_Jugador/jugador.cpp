@@ -81,14 +81,10 @@ Action ComportamientoJugador::think(Sensores sensores){
 		break;
 	}
 
-	if((sensores.terreno[2] == 'T' or sensores.terreno[2] == 'S' or sensores.terreno[2] == 'G') and sensores.superficie[2] = '_'){
+	if((sensores.terreno[2] == 'T' or sensores.terreno[2] == 'S') and sensores.superficie[2] = '_'){
 		action = actFORWARD;
-	}else if(!girar_derecha){
-		action = actTURN_SL;
-		girar_derecha = (rand()%2) == 0;
 	}else{
 		action = actTURN_SR;
-		girar_derecha = (rand()%2) == 0;
 	}
 
 	if(sensores.terreno[0] == 'G' and !bien_situado){
@@ -103,7 +99,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 	}
 
 	last_action = action;
-	//prueba
+
 	// Determinar el efecto de la ultima accion enviada
 	return accion;
 }

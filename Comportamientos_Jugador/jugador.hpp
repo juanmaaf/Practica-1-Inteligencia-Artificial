@@ -4,6 +4,12 @@
 #include "comportamientos/comportamiento.hpp"
 using namespace std;
 
+struct state{
+  int fil;
+  int col;
+  Orientacion brujula;
+}
+
 class ComportamientoJugador : public Comportamiento{
 
   public:
@@ -14,8 +20,6 @@ class ComportamientoJugador : public Comportamiento{
       last_action = actIDLE;
       current_state = current_state.col = 99;
       current_state.brujula = norte;
-      girar_derecha = false;
-      bien_situado = false;
 
     }
 
@@ -31,8 +35,6 @@ class ComportamientoJugador : public Comportamiento{
   
   state current_state;
   Action last_action;
-  bool girar_derecha;
-  bool bien_situado;
 };
 
 #endif
