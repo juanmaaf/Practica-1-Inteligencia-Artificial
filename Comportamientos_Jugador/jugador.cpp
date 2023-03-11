@@ -92,13 +92,44 @@ Action ComportamientoJugador::think(Sensores sensores){
 		mapaResultado[current_state.fil][current_state.col] = sensores.terreno[0];
 	}
 
-	sensores.colision = 0;
-	if ((sensores.terreno[2]== 'T' or sensores.terreno[2] == 'S' or sensores.terreno[2] == 'G') and sensores.superficie[2] == '_'){
+	ha_chocado = false;
+	if (sensores.superficie[2] == '_'){
 		accion = actFORWARD;
-	} else{
-		if (sensores.terreno[2] == 'M'){
-			sensores.colision = 1;
+		switch(sensores.terreno[2]){
+			case 'B':
+				if(!tiene_zapatillas){
+					ha_chocado = true;
+				}
+			break;
+			case 'A':
+				if(!tiene_bikini){
+					ha_chocado = true;
+				}
+			break;
+			case 'M':
+				ha_chocado = true;
+			break;
+			case 'P':
+				ha_chocado = true;
+			break;
+			//case 'S':
+			//break;
+			//case 'T':
+			//break;
+			//case 'G':
+			//break;
+			case 'K':
+				tiene_bikini = true;
+			break;
+			case 'D':
+				tiene_zapatillas = true;
+			break;
+			//case 'X':
+			//break;
 		}
+	}
+
+	if(ha_chocado){
 		int eleccion = rand()%4;
 		switch(eleccion){
 			case 0:
@@ -114,9 +145,6 @@ Action ComportamientoJugador::think(Sensores sensores){
 				accion = actTURN_BR;
 			break;
 		}
-	}
-
-	if(sensores.colision){
 		switch(current_state.brujula){
 			case norte:
 				mapaResultado[current_state.fil - 1][current_state.col] = sensores.terreno[2];
