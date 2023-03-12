@@ -89,10 +89,155 @@ Action ComportamientoJugador::think(Sensores sensores){
 	}
 
 	if (bien_situado){
+		if(reinicio){
+			current_state.fil = sensores.posF;
+			current_state.col= sensores.posC;
+			current_state.brujula = sensores.sentido;
+		}
+		
 		mapaResultado[current_state.fil][current_state.col] = sensores.terreno[0];
+		switch(current_state.brujula){
+			case norte:
+				mapaResultado[current_state.fil - 1][current_state.col - 1] = sensores.terreno[1];
+				mapaResultado[current_state.fil - 1][current_state.col] = sensores.terreno[2];
+				mapaResultado[current_state.fil - 1][current_state.col + 1] = sensores.terreno[3];
+				mapaResultado[current_state.fil - 2][current_state.col - 2] = sensores.terreno[4];
+				mapaResultado[current_state.fil - 2][current_state.col - 1] = sensores.terreno[5];
+				mapaResultado[current_state.fil - 2][current_state.col] = sensores.terreno[6];
+				mapaResultado[current_state.fil - 2][current_state.col + 1] = sensores.terreno[7];
+				mapaResultado[current_state.fil - 2][current_state.col + 2] = sensores.terreno[8];
+				mapaResultado[current_state.fil - 3][current_state.col - 3] = sensores.terreno[9];
+				mapaResultado[current_state.fil - 3][current_state.col - 2] = sensores.terreno[10];
+				mapaResultado[current_state.fil - 3][current_state.col - 1] = sensores.terreno[11];
+				mapaResultado[current_state.fil - 3][current_state.col] = sensores.terreno[12];
+				mapaResultado[current_state.fil - 3][current_state.col + 1] = sensores.terreno[13];
+				mapaResultado[current_state.fil - 3][current_state.col + 2] = sensores.terreno[14];
+				mapaResultado[current_state.fil - 3][current_state.col + 3] = sensores.terreno[15];
+			break;
+			case noroeste:
+				mapaResultado[current_state.fil][current_state.col - 1] = sensores.terreno[1];
+				mapaResultado[current_state.fil - 1][current_state.col - 1] = sensores.terreno[2];
+				mapaResultado[current_state.fil - 1][current_state.col] = sensores.terreno[3];
+				mapaResultado[current_state.fil][current_state.col - 2] = sensores.terreno[4];
+				mapaResultado[current_state.fil - 1][current_state.col - 2] = sensores.terreno[5];
+				mapaResultado[current_state.fil - 2][current_state.col - 2] = sensores.terreno[6];
+				mapaResultado[current_state.fil - 2][current_state.col - 1] = sensores.terreno[7];
+				mapaResultado[current_state.fil - 2][current_state.col] = sensores.terreno[8];
+				mapaResultado[current_state.fil][current_state.col - 3] = sensores.terreno[9];
+				mapaResultado[current_state.fil - 1][current_state.col - 3] = sensores.terreno[10];
+				mapaResultado[current_state.fil - 2][current_state.col - 3] = sensores.terreno[11];
+				mapaResultado[current_state.fil - 3][current_state.col - 3] = sensores.terreno[12];
+				mapaResultado[current_state.fil - 3][current_state.col - 2] = sensores.terreno[13];
+				mapaResultado[current_state.fil - 3][current_state.col - 1] = sensores.terreno[14];
+				mapaResultado[current_state.fil - 3][current_state.col] = sensores.terreno[15];
+			break;
+			case oeste:
+				mapaResultado[current_state.fil + 1][current_state.col - 1] = sensores.terreno[1];
+				mapaResultado[current_state.fil][current_state.col - 1] = sensores.terreno[2];
+				mapaResultado[current_state.fil - 1][current_state.col - 1] = sensores.terreno[3];
+				mapaResultado[current_state.fil + 2][current_state.col - 2] = sensores.terreno[4];
+				mapaResultado[current_state.fil + 1][current_state.col - 2] = sensores.terreno[5];
+				mapaResultado[current_state.fil][current_state.col - 2] = sensores.terreno[6];
+				mapaResultado[current_state.fil - 1][current_state.col - 2] = sensores.terreno[7];
+				mapaResultado[current_state.fil - 2][current_state.col - 2] = sensores.terreno[8];
+				mapaResultado[current_state.fil + 3][current_state.col - 3] = sensores.terreno[9];
+				mapaResultado[current_state.fil + 2][current_state.col - 3] = sensores.terreno[10];
+				mapaResultado[current_state.fil + 1][current_state.col - 3] = sensores.terreno[11];
+				mapaResultado[current_state.fil][current_state.col - 3] = sensores.terreno[12];
+				mapaResultado[current_state.fil - 1][current_state.col - 3] = sensores.terreno[13];
+				mapaResultado[current_state.fil - 2][current_state.col - 3] = sensores.terreno[14];
+				mapaResultado[current_state.fil - 3][current_state.col - 3] = sensores.terreno[15];
+			break;
+			case suroeste:
+				mapaResultado[current_state.fil + 1][current_state.col] = sensores.terreno[1];
+				mapaResultado[current_state.fil + 1][current_state.col - 1] = sensores.terreno[2];
+				mapaResultado[current_state.fil][current_state.col - 1] = sensores.terreno[3];
+				mapaResultado[current_state.fil + 2][current_state.col] = sensores.terreno[4];
+				mapaResultado[current_state.fil + 2][current_state.col - 1] = sensores.terreno[5];
+				mapaResultado[current_state.fil + 2][current_state.col - 2] = sensores.terreno[6];
+				mapaResultado[current_state.fil + 1][current_state.col - 2] = sensores.terreno[7];
+				mapaResultado[current_state.fil][current_state.col - 2] = sensores.terreno[8];
+				mapaResultado[current_state.fil + 3][current_state.col] = sensores.terreno[9];
+				mapaResultado[current_state.fil + 3][current_state.col - 1] = sensores.terreno[10];
+				mapaResultado[current_state.fil + 3][current_state.col - 2] = sensores.terreno[11];
+				mapaResultado[current_state.fil + 3][current_state.col - 3] = sensores.terreno[12];
+				mapaResultado[current_state.fil + 2][current_state.col - 3] = sensores.terreno[13];
+				mapaResultado[current_state.fil + 1][current_state.col - 3] = sensores.terreno[14];
+				mapaResultado[current_state.fil][current_state.col - 3] = sensores.terreno[15];
+			break;
+			case sur:
+				mapaResultado[current_state.fil + 1][current_state.col + 1] = sensores.terreno[1];
+				mapaResultado[current_state.fil + 1][current_state.col] = sensores.terreno[2];
+				mapaResultado[current_state.fil + 1][current_state.col - 1] = sensores.terreno[3];
+				mapaResultado[current_state.fil + 2][current_state.col + 2] = sensores.terreno[4];
+				mapaResultado[current_state.fil + 2][current_state.col + 1] = sensores.terreno[5];
+				mapaResultado[current_state.fil + 2][current_state.col] = sensores.terreno[6];
+				mapaResultado[current_state.fil + 2][current_state.col - 1] = sensores.terreno[7];
+				mapaResultado[current_state.fil + 2][current_state.col - 2] = sensores.terreno[8];
+				mapaResultado[current_state.fil + 3][current_state.col + 3] = sensores.terreno[9];
+				mapaResultado[current_state.fil + 3][current_state.col + 2] = sensores.terreno[10];
+				mapaResultado[current_state.fil + 3][current_state.col + 1] = sensores.terreno[11];
+				mapaResultado[current_state.fil + 3][current_state.col] = sensores.terreno[12];
+				mapaResultado[current_state.fil + 3][current_state.col - 1] = sensores.terreno[13];
+				mapaResultado[current_state.fil + 3][current_state.col - 2] = sensores.terreno[14];
+				mapaResultado[current_state.fil + 3][current_state.col - 3] = sensores.terreno[15];
+			break;
+			case sureste:
+				mapaResultado[current_state.fil][current_state.col + 1] = sensores.terreno[1];
+				mapaResultado[current_state.fil + 1][current_state.col + 1] = sensores.terreno[2];
+				mapaResultado[current_state.fil + 1][current_state.col] = sensores.terreno[3];
+				mapaResultado[current_state.fil][current_state.col + 2] = sensores.terreno[4];
+				mapaResultado[current_state.fil + 1][current_state.col + 2] = sensores.terreno[5];
+				mapaResultado[current_state.fil + 2][current_state.col + 2] = sensores.terreno[6];
+				mapaResultado[current_state.fil + 2][current_state.col + 1] = sensores.terreno[7];
+				mapaResultado[current_state.fil + 2][current_state.col] = sensores.terreno[8];
+				mapaResultado[current_state.fil][current_state.col + 3] = sensores.terreno[9];
+				mapaResultado[current_state.fil + 1][current_state.col + 3] = sensores.terreno[10];
+				mapaResultado[current_state.fil + 2][current_state.col + 3] = sensores.terreno[11];
+				mapaResultado[current_state.fil + 3][current_state.col + 3] = sensores.terreno[12];
+				mapaResultado[current_state.fil + 3][current_state.col + 2] = sensores.terreno[13];
+				mapaResultado[current_state.fil + 3][current_state.col + 1] = sensores.terreno[14];
+				mapaResultado[current_state.fil + 3][current_state.col] = sensores.terreno[15];
+			break;
+			case este:
+				mapaResultado[current_state.fil - 1][current_state.col + 1] = sensores.terreno[1];
+				mapaResultado[current_state.fil][current_state.col + 1] = sensores.terreno[2];
+				mapaResultado[current_state.fil + 1][current_state.col + 1] = sensores.terreno[3];
+				mapaResultado[current_state.fil - 2][current_state.col + 2] = sensores.terreno[4];
+				mapaResultado[current_state.fil - 1][current_state.col + 2] = sensores.terreno[5];
+				mapaResultado[current_state.fil][current_state.col + 2] = sensores.terreno[6];
+				mapaResultado[current_state.fil + 1][current_state.col + 2] = sensores.terreno[7];
+				mapaResultado[current_state.fil + 2][current_state.col + 2] = sensores.terreno[8];
+				mapaResultado[current_state.fil - 3][current_state.col + 3] = sensores.terreno[9];
+				mapaResultado[current_state.fil - 2][current_state.col + 3] = sensores.terreno[10];
+				mapaResultado[current_state.fil - 1][current_state.col + 3] = sensores.terreno[11];
+				mapaResultado[current_state.fil][current_state.col + 3] = sensores.terreno[12];
+				mapaResultado[current_state.fil + 1][current_state.col + 3] = sensores.terreno[13];
+				mapaResultado[current_state.fil + 2][current_state.col + 3] = sensores.terreno[14];
+				mapaResultado[current_state.fil + 3][current_state.col + 3] = sensores.terreno[15];
+			break;
+			case noreste:
+				mapaResultado[current_state.fil - 1][current_state.col] = sensores.terreno[1];
+				mapaResultado[current_state.fil - 1][current_state.col + 1] = sensores.terreno[2];
+				mapaResultado[current_state.fil][current_state.col + 1] = sensores.terreno[3];
+				mapaResultado[current_state.fil - 2][current_state.col] = sensores.terreno[4];
+				mapaResultado[current_state.fil - 2][current_state.col + 1] = sensores.terreno[5];
+				mapaResultado[current_state.fil - 2][current_state.col + 2] = sensores.terreno[6];
+				mapaResultado[current_state.fil - 1][current_state.col + 2] = sensores.terreno[7];
+				mapaResultado[current_state.fil][current_state.col + 2] = sensores.terreno[8];
+				mapaResultado[current_state.fil - 3][current_state.col] = sensores.terreno[9];
+				mapaResultado[current_state.fil - 3][current_state.col + 1] = sensores.terreno[10];
+				mapaResultado[current_state.fil - 3][current_state.col + 2] = sensores.terreno[11];
+				mapaResultado[current_state.fil - 3][current_state.col + 3] = sensores.terreno[12];
+				mapaResultado[current_state.fil - 2][current_state.col + 3] = sensores.terreno[13];
+				mapaResultado[current_state.fil - 1][current_state.col + 3] = sensores.terreno[14];
+				mapaResultado[current_state.fil][current_state.col + 3] = sensores.terreno[15];
+			break;
+		}
 	}
 
 	ha_chocado = false;
+	reinicio = false;
 	if (sensores.superficie[2] == '_'){
 		accion = actFORWARD;
 		switch(sensores.terreno[2]){
@@ -110,7 +255,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 				ha_chocado = true;
 			break;
 			case 'P':
-				ha_chocado = true;
+				reinicio = true;
 			break;
 			//case 'S':
 			//break;
@@ -145,33 +290,6 @@ Action ComportamientoJugador::think(Sensores sensores){
 				accion = actTURN_BR;
 			break;
 		}
-		switch(current_state.brujula){
-			case norte:
-				mapaResultado[current_state.fil - 1][current_state.col] = sensores.terreno[2];
-			break;
-			case noroeste:
-				mapaResultado[current_state.fil - 1][current_state.col - 1] = sensores.terreno[2];
-			break;
-			case oeste:
-				mapaResultado[current_state.fil][current_state.col - 1] = sensores.terreno[2];
-			break;
-			case suroeste:
-				mapaResultado[current_state.fil + 1][current_state.col - 1] = sensores.terreno[2];
-			break;
-			case sur:
-				mapaResultado[current_state.fil + 1][current_state.col] = sensores.terreno[2];
-			break;
-			case sureste:
-				mapaResultado[current_state.fil + 1][current_state.col - 1] = sensores.terreno[2];
-			break;
-			case este:
-				mapaResultado[current_state.fil][current_state.col + 1] = sensores.terreno[2];
-			break;
-			case noreste:
-				mapaResultado[current_state.fil - 1][current_state.col + 1] = sensores.terreno[2];
-			break;
-		}
-		
 	}
 
 	last_action = accion;
