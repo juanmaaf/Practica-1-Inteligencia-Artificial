@@ -81,20 +81,19 @@ Action ComportamientoJugador::think(Sensores sensores){
 		break;
 	}
 
-	if (sensores.terreno[0] == 'G' and !bien_situado){
+	if ((sensores.terreno[0] == 'G' and !bien_situado)){
 		current_state.fil = sensores.posF;
 		current_state.col= sensores.posC;
 		current_state.brujula = sensores.sentido;
 		bien_situado = true;
 	}
 
-	if (bien_situado){
-		if(reinicio){
+	if (bien_situado && !sensores.colision){
+		if(sensores.nivel == 0){
 			current_state.fil = sensores.posF;
 			current_state.col= sensores.posC;
 			current_state.brujula = sensores.sentido;
 		}
-		
 		mapaResultado[current_state.fil][current_state.col] = sensores.terreno[0];
 		switch(current_state.brujula){
 			case norte:
@@ -236,26 +235,25 @@ Action ComportamientoJugador::think(Sensores sensores){
 		}
 	}
 
-	ha_chocado = false;
-	reinicio = false;
+	paso_no_permitido = false;
 	if (sensores.superficie[2] == '_'){
 		accion = actFORWARD;
 		switch(sensores.terreno[2]){
 			case 'B':
-				if(!tiene_zapatillas){
-					ha_chocado = true;
-				}
+				//if(!tiene_zapatillas){
+				//	paso_no_permitido = true;
+				//}
 			break;
 			case 'A':
 				if(!tiene_bikini){
-					ha_chocado = true;
+					paso_no_permitido = true;
 				}
 			break;
-			case 'M':
-				ha_chocado = true;
-			break;
+			//case 'M':
+				
+			//break;
 			case 'P':
-				reinicio = true;
+				
 			break;
 			//case 'S':
 			//break;
@@ -274,7 +272,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 		}
 	}
 
-	if(ha_chocado){
+	if(paso_no_permitido or sensores.colision or sensores.reset){
 		int eleccion = rand()%4;
 		switch(eleccion){
 			case 0:

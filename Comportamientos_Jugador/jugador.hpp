@@ -23,8 +23,7 @@ class ComportamientoJugador : public Comportamiento{
       bien_situado = false;
       tiene_bikini = false;
       tiene_zapatillas = false;
-      ha_chocado = false;
-      reinicio = false;
+      paso_no_permitido = false;
     }
 
     ComportamientoJugador(const ComportamientoJugador & comport) : Comportamiento(comport){}
@@ -42,8 +41,7 @@ class ComportamientoJugador : public Comportamiento{
   bool bien_situado;
   bool tiene_bikini;
   bool tiene_zapatillas;
-  bool ha_chocado;
-  bool reinicio;
+  bool paso_no_permitido;
 };
 
 #endif
