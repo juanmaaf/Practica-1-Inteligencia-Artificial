@@ -240,9 +240,9 @@ Action ComportamientoJugador::think(Sensores sensores){
 		accion = actFORWARD;
 		switch(sensores.terreno[2]){
 			case 'B':
-				//if(!tiene_zapatillas){
-				//	paso_no_permitido = true;
-				//}
+				if(!tiene_zapatillas){
+					paso_no_permitido = true;
+				}
 			break;
 			case 'A':
 				if(!tiene_bikini){
@@ -253,7 +253,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 				
 			//break;
 			case 'P':
-				
+				paso_no_permitido = true;
 			break;
 			//case 'S':
 			//break;
