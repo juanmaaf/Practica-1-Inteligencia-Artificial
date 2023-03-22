@@ -34,52 +34,56 @@ Action ComportamientoJugador::think(Sensores sensores){
 	cout << "Vida: " << sensores.vida << endl;
 	cout << endl;
 
-	switch(last_action){
-		case actFORWARD:
-			switch(current_state.brujula){
-				case norte:
-					current_state.fil--;
-				break;
-				case noroeste:
-					current_state.fil--;
-					current_state.col--;
-				break;
-				case oeste:
-					current_state.col--;
-				break;
-				case suroeste:
-					current_state.col--;
-					current_state.fil++;
-				break;
-				case sur:
-					current_state.fil++;
-				break;
-				case sureste:
-					current_state.col++;
-					current_state.fil++;
-				break;
-				case este:
-					current_state.col++;
-				break;
-				case noreste:
-					current_state.col++;
-					current_state.fil--;
-				break;
-			}
-		break;
-		case actTURN_SL:
-			current_state.brujula = static_cast<Orientacion>((current_state.brujula+7)%8);
-		break;
-		case actTURN_SR:
-			current_state.brujula = static_cast<Orientacion>((current_state.brujula+1)%8);
-		break;
-		case actTURN_BL:
-			current_state.brujula = static_cast<Orientacion>((current_state.brujula+5)%8);
-		break;
-		case actTURN_BR:
-			current_state.brujula = static_cast<Orientacion>((current_state.brujula+3)%8);
-		break;
+	// Si hemos colisionado, no actualizamos ESTADO
+	if(!sensores.colision){
+		switch(last_action){
+			case actFORWARD:
+				switch(current_state.brujula){
+					case norte:
+						current_state.fil--;
+					break;
+					case noroeste:
+						current_state.fil--;
+						current_state.col--;
+					break;
+					case oeste:
+						current_state.col--;
+					break;
+					case suroeste:
+						current_state.col--;
+						current_state.fil++;
+					break;
+					case sur:
+						current_state.fil++;
+					break;
+					case sureste:
+						current_state.col++;
+						current_state.fil++;
+					break;
+					case este:
+						current_state.col++;
+					break;
+					case noreste:
+						current_state.col++;
+						current_state.fil--;
+					break;
+				}
+			break;
+			case actTURN_SL:
+				current_state.brujula = static_cast<Orientacion>((current_state.brujula+7)%8);
+			break;
+			case actTURN_SR:
+				current_state.brujula = static_cast<Orientacion>((current_state.brujula+1)%8);
+			break;
+			case actTURN_BL:
+				current_state.brujula = static_cast<Orientacion>((current_state.brujula+5)%8);
+			break;
+			case actTURN_BR:
+				current_state.brujula = static_cast<Orientacion>((current_state.brujula+3)%8);
+			break;
+		}
 	}
+	
 
 	// Pintamos los Precipicios -> 3 de anchcura en cada lado
 
@@ -101,9 +105,11 @@ Action ComportamientoJugador::think(Sensores sensores){
 
 	if(sensores.reset){
 		bien_situado = false;
+		tiene_zapatillas = false;
+		tiene_bikini = false;
 	}
 
-	if ((sensores.terreno[0] == 'G' and !bien_situado) or (sensores.colision && sensores.nivel == 0)){
+	if (sensores.terreno[0] == 'G' and !bien_situado){
 		current_state.fil = sensores.posF;
 		current_state.col= sensores.posC;
 		current_state.brujula = sensores.sentido;
@@ -289,7 +295,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 		}
 	}
 
-	if(paso_no_permitido or sensores.colision){
+	if(paso_no_permitido or sensores.reset){
 		int eleccion = rand()%4;
 		switch(eleccion){
 			case 0:
@@ -302,6 +308,18 @@ Action ComportamientoJugador::think(Sensores sensores){
 				accion = actTURN_BL;
 			break;
 			case 3:
+				accion = actTURN_BR;
+			break;
+		}
+	}
+
+	if(sensores.colision){
+		int elec = rand()%4;
+		switch(elec){
+			case 0:
+				accion = actTURN_BL;
+			break;
+			case 1:
 				accion = actTURN_BR;
 			break;
 		}
