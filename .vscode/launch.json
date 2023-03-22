@@ -1,57 +1,23 @@
 {
+    "version": "2.0.0",
     "configurations": [
+
         {
-            "name": "C/C++: cpp Compilar y depurar el archivo activo",
+            "name": "Debug",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}/${fileBasenameNoExtension}",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${fileDirname}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Habilitar la impresión con sangría para gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                },
-                {
-                    "description": "Establecer tipo de desensamblado en Intel",
-                    "text": "-gdb-set disassembly-flavor intel",
-                    "ignoreFailures": true
-                }
-            ],
-            "preLaunchTask": "C/C++: cpp compilar archivo activo",
-            "miDebuggerPath": "/usr/bin/gdb"
-        },
-        {
-            "name": "C/C++: g++ Compilar y depurar el archivo activo",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${fileDirname}/${fileBasenameNoExtension}",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${fileDirname}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Habilitar la impresión con sangría para gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                },
-                {
-                    "description": "Establecer tipo de desensamblado en Intel",
-                    "text": "-gdb-set disassembly-flavor intel",
-                    "ignoreFailures": true
-                }
-            ],
-            "preLaunchTask": "C/C++: g++ compilar archivo activo",
-            "miDebuggerPath": "/usr/bin/gdb"
+            "program": "${workspaceRoot}/practica1SG",
+            "cwd": "${workspaceRoot}",
+            "args": ["mapas/mapa30.map", "1", "3", "6", "6", "1s"],
+            // "preLaunchTask": "build",
+            // set environment variables
+            // "environment": [
+            //     {
+            //         "name": "DISPLAY",
+            //         "value": ":1.0"
+            //     }
+            // ],
+            
         }
-    ],
-    "version": "2.0.0"
+    ]
 }

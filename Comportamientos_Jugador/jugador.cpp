@@ -81,19 +81,36 @@ Action ComportamientoJugador::think(Sensores sensores){
 		break;
 	}
 
-	if ((sensores.terreno[0] == 'G' and !bien_situado)){
+	// Pintamos los Precipicios -> 3 de anchcura en cada lado
+
+	if(!precipicios_pintados){
+		for(int i = 0; i < tamanio; i++){
+			for(int j = 0; j < tamanio; j++){
+				if(i>2 && i<tamanio-2){
+					if(j<=2 || j >= tamanio -3){
+						mapaResultado[i][j] = 'P';
+					}
+				}
+				if(i<=2 || i >= tamanio - 3){
+					mapaResultado[i][j] = 'P';
+				}
+			}
+		}
+		precipicios_pintados = true;
+	}
+
+	if(sensores.reset){
+		bien_situado = false;
+	}
+
+	if ((sensores.terreno[0] == 'G' and !bien_situado) or (sensores.colision && sensores.nivel == 0)){
 		current_state.fil = sensores.posF;
 		current_state.col= sensores.posC;
 		current_state.brujula = sensores.sentido;
 		bien_situado = true;
 	}
 
-	if (bien_situado && !sensores.colision){
-		if(sensores.nivel == 0){
-			current_state.fil = sensores.posF;
-			current_state.col= sensores.posC;
-			current_state.brujula = sensores.sentido;
-		}
+	if (bien_situado){
 		mapaResultado[current_state.fil][current_state.col] = sensores.terreno[0];
 		switch(current_state.brujula){
 			case norte:
@@ -272,7 +289,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 		}
 	}
 
-	if(paso_no_permitido or sensores.colision or sensores.reset){
+	if(paso_no_permitido or sensores.colision){
 		int eleccion = rand()%4;
 		switch(eleccion){
 			case 0:
