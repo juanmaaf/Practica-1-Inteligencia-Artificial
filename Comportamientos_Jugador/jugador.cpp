@@ -97,7 +97,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 		tiene_bikini = false;
 	}
 
-	if (sensores.terreno[0] == 'G' and !bien_situado){
+	if ((sensores.terreno[0] == 'G' and !bien_situado) || sensores.nivel == 0){
 		current_state.fil = sensores.posF;
 		current_state.col= sensores.posC;
 		current_state.brujula = sensores.sentido;
@@ -114,7 +114,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 		accion = actFORWARD;
 		switch(sensores.terreno[2]){
 			case 'B':
-				if(!tiene_zapatillas && last_action == actFORWARD){
+				if(!tiene_zapatillas){
 					paso_no_permitido = true;
 				}
 			break;
