@@ -264,10 +264,6 @@ Action ComportamientoJugador::think(Sensores sensores){
 		}
 	}
 
-	if(sensores.terreno[0] == 'X' && sensores.bateria != bateriaMax){
-		accion = actIDLE;
-	}
-
 	paso_no_permitido = false;
 	if (sensores.superficie[2] == '_'){
 		accion = actFORWARD;
@@ -306,6 +302,10 @@ Action ComportamientoJugador::think(Sensores sensores){
 				}
 			break;*/
 		}
+	}
+
+	if(sensores.terreno[0] == 'X' && sensores.bateria != bateriaMax){
+		accion = actIDLE;
 	}
 
 	if(paso_no_permitido or sensores.reset){
