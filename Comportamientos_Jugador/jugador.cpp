@@ -114,7 +114,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 		accion = actFORWARD;
 		switch(sensores.terreno[2]){
 			case 'B':
-				if(!tiene_zapatillas){
+				if(!tiene_zapatillas && last_action == actFORWARD){
 					paso_no_permitido = true;
 				}
 			break;

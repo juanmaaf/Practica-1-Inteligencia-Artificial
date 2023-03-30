@@ -43,14 +43,14 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : " -fopenmp -pthread -std=c++11 -g"
+					"fragment" : " -fopenmp -pthread -std=c++11"
 				}
 			],
 			"includes" : 
 			[
 				{
 					"backtrace" : 2,
-					"path" : "/home/juanmaaf/Escritorio/IA/P1/practica1/include"
+					"path" : "/home/juanmaaf/practica1/include"
 				}
 			],
 			"language" : "CXX",

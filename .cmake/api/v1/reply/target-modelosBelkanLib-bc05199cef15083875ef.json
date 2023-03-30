@@ -3,7 +3,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "lib/libobj3DLib.a"
+			"path" : "lib/libmodelosBelkanLib.a"
 		}
 	],
 	"backtrace" : 1,
@@ -12,6 +12,7 @@
 		"commands" : 
 		[
 			"add_library",
+			"target_link_libraries",
 			"include_directories"
 		],
 		"files" : 
@@ -26,11 +27,17 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 69,
+				"line" : 75,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
+				"file" : 0,
+				"line" : 76,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
 				"file" : 0,
 				"line" : 60,
 				"parent" : 0
@@ -43,13 +50,13 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : " -fopenmp -pthread -std=c++11 -g"
+					"fragment" : " -fopenmp -pthread -std=c++11"
 				}
 			],
 			"includes" : 
 			[
 				{
-					"backtrace" : 2,
+					"backtrace" : 3,
 					"path" : "/home/juanmaaf/practica1/include"
 				}
 			],
@@ -69,15 +76,20 @@
 				10,
 				11,
 				12,
-				13,
-				14,
-				15
+				13
 			]
 		}
 	],
-	"id" : "obj3DLib::@6890427a1f51a3e7e1df",
-	"name" : "obj3DLib",
-	"nameOnDisk" : "libobj3DLib.a",
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "obj3DLib::@6890427a1f51a3e7e1df"
+		}
+	],
+	"id" : "modelosBelkanLib::@6890427a1f51a3e7e1df",
+	"name" : "modelosBelkanLib",
+	"nameOnDisk" : "libmodelosBelkanLib.a",
 	"paths" : 
 	{
 		"build" : ".",
@@ -102,9 +114,7 @@
 				10,
 				11,
 				12,
-				13,
-				14,
-				15
+				13
 			]
 		}
 	],
@@ -113,97 +123,85 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/obj3dlib/cono3d.cc",
+			"path" : "src/modelos/aldeano/aldeano.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/obj3dlib/cono3dwire.cc",
+			"path" : "src/modelos/aldeano/brazo.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/obj3dlib/cubo3d.cc",
+			"path" : "src/modelos/aldeano/cabeza.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/obj3dlib/dodecaedro3d.cc",
+			"path" : "src/modelos/aldeano/cintura.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/obj3dlib/esfera3d.cc",
+			"path" : "src/modelos/aldeano/pierna.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/obj3dlib/file_ply_stl.cc",
+			"path" : "src/modelos/aldeano/torso.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/obj3dlib/icosaedro3d.cc",
+			"path" : "src/modelos/arbol/arbol.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/obj3dlib/jpeg_reader/jpg_imagen.cpp",
+			"path" : "src/modelos/item/item.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/obj3dlib/jpeg_reader/jpg_memsrc.cpp",
+			"path" : "src/modelos/jugador/jugador3d.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/obj3dlib/jpeg_reader/jpg_readwrite.cpp",
+			"path" : "src/modelos/jugador/quesito.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/obj3dlib/luz.cpp",
+			"path" : "src/modelos/perro/cabeza.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/obj3dlib/objeto3d.cc",
+			"path" : "src/modelos/perro/lomo.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/obj3dlib/objrevolucion3d.cc",
+			"path" : "src/modelos/perro/perro.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/obj3dlib/octaedro3d.cc",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "src/obj3dlib/tetraedro3d.cc",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "src/obj3dlib/toro3d.cc",
+			"path" : "src/modelos/retrato.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],
