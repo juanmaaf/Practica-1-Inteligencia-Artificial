@@ -27,8 +27,9 @@ class ComportamientoJugador : public Comportamiento{
       tamanio = size;
       precipicios_pintados = false;
       bateriaMax = 5000;
+      copiaTrasPosionamiento = false;
 
-      vector<int> columnaMVP(size, 0);
+      vector<unsigned int> columnaMVP(size, 0);
       for(int i = 0; i < size; i++){
         matrizVecesPasadas.push_back(columnaMVP);
       }
@@ -36,6 +37,11 @@ class ComportamientoJugador : public Comportamiento{
       vector<unsigned char> columnaMNP(size*2 + 1, '?');
       for(int i = 0; i < size*2 +1; i++){
         matrizNoPosicionado.push_back(columnaMNP);
+      }
+
+      vector<unsigned int> columnaMVPNP(size, 0);
+      for(int i = 0; i < size; i++){
+        matrizVecesPasadasNoPosicionado.push_back(columnaMVPNP);
       }
 
     }
@@ -46,8 +52,8 @@ class ComportamientoJugador : public Comportamiento{
     Action think(Sensores sensores);
     int interact(Action accion, int valor);
     
-    void contabilizaPasoPorCasilla(const state current_state, vector< vector<int> > &matriz);
-    void printMatrizVecesPasadas(const int tam, vector< vector<int> > &matriz);
+    void contabilizaPasoPorCasilla(const state current_state, vector< vector<unsigned int> > &matriz);
+    void printMatrizVecesPasadas(const int tam, vector< vector<unsigned int> > &matriz);
     void printMatrizNoPosicionado(const int tam, vector< vector<unsigned char> > &matriz);
 
     void pintaPrecipicios(const int tam, vector< vector<unsigned char> > &matriz);
@@ -66,9 +72,11 @@ class ComportamientoJugador : public Comportamiento{
   int tamanio;
   bool precipicios_pintados;
   int bateriaMax;
+  bool copiaTrasPosionamiento;
 
-  vector< vector<int> > matrizVecesPasadas;
+  vector< vector<unsigned int> > matrizVecesPasadas;
   vector< vector<unsigned char> > matrizNoPosicionado;
+  vector< vector<unsigned int> > matrizVecesPasadasNoPosicionado;
 };
 
 #endif

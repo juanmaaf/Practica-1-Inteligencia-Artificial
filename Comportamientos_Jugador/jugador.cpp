@@ -95,6 +95,9 @@ Action ComportamientoJugador::think(Sensores sensores){
 		bien_situado = false;
 		tiene_zapatillas = false;
 		tiene_bikini = false;
+		if(sensores.nivel != 0){
+			copiaTrasPosionamiento = false;
+		}
 	}
 
 	if ((sensores.terreno[0] == 'G' and !bien_situado) || sensores.nivel == 0){
@@ -102,17 +105,27 @@ Action ComportamientoJugador::think(Sensores sensores){
 		current_state.col= sensores.posC;
 		current_state.brujula = sensores.sentido;
 		bien_situado = true;
+
+		if(sensores.nivel != 0 && !copiaTrasPosionamiento){
+			
+		}
 	}
+
+
 
 	if (bien_situado){
 		contabilizaPasoPorCasilla(current_state, matrizVecesPasadas);
 		pintaVision(current_state, sensores.terreno, mapaResultado);
+	}else{
+		contabilizaPasoPorCasilla(current_state, matrizVecesPasadasNoPosicionado);
+		pintaVision(current_state, sensores.terreno, matrizNoPosicionado);
 	}
 
 	paso_no_permitido = false;
 	if (sensores.superficie[2] == '_'){
 		accion = actFORWARD;
 		switch(sensores.terreno[2]){
+			// Los tipos no especificados no requieren condiciones
 			case 'B':
 				if(!tiene_zapatillas && last_action == actFORWARD){
 					paso_no_permitido = true;
@@ -123,30 +136,18 @@ Action ComportamientoJugador::think(Sensores sensores){
 					paso_no_permitido = true;
 				}
 			break;
-			//case 'M':
-				
-			//break;
 			case 'P':
 				paso_no_permitido = true;
 			break;
-			//case 'S':
-			//break;
-			//case 'T':
-			//break;
-			//case 'G':
-			//break;
 			case 'K':
 				tiene_bikini = true;
 			break;
 			case 'D':
 				tiene_zapatillas = true;
 			break;
-			/*case 'X':
-				if(sensores.bateria != bateriaMax){
-					accion = actIDLE;
-				}
-			break;*/
 		}
+	}else{
+		paso_no_permitido = true;
 	}
 
 	if(sensores.terreno[0] == 'X' && sensores.bateria != bateriaMax){
@@ -201,11 +202,11 @@ int ComportamientoJugador::interact(Action accion, int valor){
   return false;
 }
 
-void ComportamientoJugador::contabilizaPasoPorCasilla(const state current_state, vector< vector<int> > &matriz){
+void ComportamientoJugador::contabilizaPasoPorCasilla(const state current_state, vector< vector<unsigned int> > &matriz){
 	matriz[current_state.fil][current_state.col]++;
 }
 
-void ComportamientoJugador::printMatrizVecesPasadas(const int tam, vector< vector<int> > &matriz){
+void ComportamientoJugador::printMatrizVecesPasadas(const int tam, vector< vector<unsigned int> > &matriz){
 	for(int i = 0; i < tam; i++){
 		for(int j = 0; j < tam; j++){
 			cout << matriz[i][j];
