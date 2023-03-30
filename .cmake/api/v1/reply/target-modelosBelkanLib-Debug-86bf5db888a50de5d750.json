@@ -50,7 +50,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : " -fopenmp -pthread -std=c++11"
+					"fragment" : " -fopenmp -pthread -std=c++11 -g"
 				}
 			],
 			"includes" : 

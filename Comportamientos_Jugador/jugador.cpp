@@ -103,7 +103,6 @@ Action ComportamientoJugador::think(Sensores sensores){
 	if(sensores.nivel != 0 && !bien_situado){
 		current_state.fil = tamanio;
 		current_state.col = tamanio;
-		current_state.brujula = norte;
 	}
 
 	if ((sensores.terreno[0] == 'G' and !bien_situado) || sensores.nivel == 0){
@@ -112,20 +111,22 @@ Action ComportamientoJugador::think(Sensores sensores){
 		current_state.brujula = sensores.sentido;
 		bien_situado = true;
 
-		if(sensores.nivel != 0 && !copiaTrasPosionamiento){
-			/*for(){
-				for(){
-
+		/*if(sensores.nivel != 0 && !copiaTrasPosionamiento){
+			for(int i = 0; i < tamanio; i++){
+				for(int j = 0; j < tamanio; j++){
+					if(matrizNoPosicionado[i+tamanio][j+tamanio] != '?'){
+						mapaResultado[i][j] = matrizNoPosicionado[i+tamanio][j+tamanio];
+					}
 				}
 			}
 
-			for(){
-				for(){
-
+			for(int i = 0; i < tamanio; i++){
+				for(int j = 0; j < tamanio; j++){
+					matrizVecesPasadas[i][j] += matrizVecesPasadasNoPosicionado[i+tamanio][j+tamanio];
 				}
-			}*/
+			}
 			copiaTrasPosionamiento = true;
-		}
+		}*/
 	}
 
 	if (bien_situado){
