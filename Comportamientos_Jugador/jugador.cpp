@@ -111,8 +111,8 @@ Action ComportamientoJugador::think(Sensores sensores){
 		current_state.brujula = sensores.sentido;
 		bien_situado = true;
 
-		/*if(sensores.nivel != 0 && !copiaTrasPosionamiento){
-			for(int i = 0; i < tamanio; i++){
+		if(sensores.nivel != 0 && !copiaTrasPosionamiento){
+			/*for(int i = 0; i < tamanio; i++){
 				for(int j = 0; j < tamanio; j++){
 					if(matrizNoPosicionado[i+tamanio][j+tamanio] != '?'){
 						mapaResultado[i][j] = matrizNoPosicionado[i+tamanio][j+tamanio];
@@ -125,8 +125,8 @@ Action ComportamientoJugador::think(Sensores sensores){
 					matrizVecesPasadas[i][j] += matrizVecesPasadasNoPosicionado[i+tamanio][j+tamanio];
 				}
 			}
-			copiaTrasPosionamiento = true;
-		}*/
+			copiaTrasPosionamiento = true;*/
+		}
 	}
 
 	if (bien_situado){

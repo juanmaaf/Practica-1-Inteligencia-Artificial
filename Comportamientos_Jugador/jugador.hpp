@@ -35,12 +35,12 @@ class ComportamientoJugador : public Comportamiento{
       }
 
       vector<unsigned char> columnaMNP(size*2 + 1, '?');
-      for(int i = 0; i < size*2 +1; i++){
+      for(int i = 0; i < size*2 + 1; i++){
         matrizNoPosicionado.push_back(columnaMNP);
       }
 
       vector<unsigned int> columnaMVPNP(size*2 + 1, 0);
-      for(int i = 0; i < size; i++){
+      for(int i = 0; i < size*2 + 1; i++){
         matrizVecesPasadasNoPosicionado.push_back(columnaMVPNP);
       }
 
