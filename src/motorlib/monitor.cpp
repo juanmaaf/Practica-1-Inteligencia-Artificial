@@ -227,6 +227,29 @@ double MonitorJuego::CoincidenciaConElMapa()
   return (aciertos * 100.0 / totalCasillas);
 }
 
+double MonitorJuego::CoincidenciaConElMapaContandoErrores()
+{
+  int aciertos = 0, totalCasillas = 0;
+
+  for (unsigned int i = 0; i < getMapa()->getNFils(); i++)
+  {
+    for (unsigned int j = 0; j < getMapa()->getNCols(); j++)
+    {
+      if (getMapa()->getCelda(i, j) == get_entidad(0)->getMapaResultado()[i][j])
+      {
+        aciertos++;
+      }
+      else if (get_entidad(0)->getMapaResultado()[i][j] != '?')
+      { // Puso un valor distinto de desconocido en mapaResultado y no acertó
+        aciertos--;
+      }
+      totalCasillas++;
+    }
+  }
+
+  return (max(aciertos,0) * 100.0 / totalCasillas);
+}
+
 void MonitorJuego::PintaEstadoMonitor()
 {
   cout << "*********************************************\n";
@@ -243,4 +266,18 @@ void MonitorJuego::PintaEstadoMonitor()
          << endl;
   }
   cout << "*********************************************\n";
+}
+
+void MonitorJuego::init_casillas_especiales(unsigned int f, unsigned int c){
+  unsigned char celda_inicial;
+  celda_inicial = getMapa()->getCelda(f, c);
+  if (celda_inicial == 'D'){
+    get_entidad(0)->Cogio_Zapatillas(true);
+  }
+  else if (celda_inicial == 'K'){
+    get_entidad(0)->Cogio_Bikini(true);
+  }
+  else if (celda_inicial == 'G'){
+    get_entidad(0)->notify();
+  }
 }
