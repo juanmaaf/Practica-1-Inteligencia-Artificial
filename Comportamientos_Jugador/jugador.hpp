@@ -26,6 +26,7 @@ class ComportamientoJugador : public Comportamiento{
       paso_no_permitido = false;
       tamanio = size;
       precipicios_pintados = false;
+      bateriaMax = 5000;
     }
 
     ComportamientoJugador(const ComportamientoJugador & comport) : Comportamiento(comport){}
@@ -46,6 +47,7 @@ class ComportamientoJugador : public Comportamiento{
   bool paso_no_permitido;
   int tamanio;
   bool precipicios_pintados;
+  int bateriaMax;
 };
 
 #endif

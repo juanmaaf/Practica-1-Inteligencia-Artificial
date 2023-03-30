@@ -107,6 +107,12 @@ Action ComportamientoJugador::think(Sensores sensores){
 		bien_situado = false;
 		tiene_zapatillas = false;
 		tiene_bikini = false;
+		if(sensores.nivel == 0){
+			current_state.fil = sensores.posF;
+			current_state.col= sensores.posC;
+			current_state.brujula = sensores.sentido;
+			bien_situado = true;
+		}
 	}
 
 	if (sensores.terreno[0] == 'G' and !bien_situado){
@@ -258,12 +264,16 @@ Action ComportamientoJugador::think(Sensores sensores){
 		}
 	}
 
+	if(sensores.terreno[0] == 'X' && sensores.bateria != bateriaMax){
+		accion = actIDLE;
+	}
+
 	paso_no_permitido = false;
 	if (sensores.superficie[2] == '_'){
 		accion = actFORWARD;
 		switch(sensores.terreno[2]){
 			case 'B':
-				if(!tiene_zapatillas){
+				if(!tiene_zapatillas && last_action == actFORWARD){
 					paso_no_permitido = true;
 				}
 			break;
@@ -290,8 +300,11 @@ Action ComportamientoJugador::think(Sensores sensores){
 			case 'D':
 				tiene_zapatillas = true;
 			break;
-			//case 'X':
-			//break;
+			/*case 'X':
+				if(sensores.bateria != bateriaMax){
+					accion = actIDLE;
+				}
+			break;*/
 		}
 	}
 
