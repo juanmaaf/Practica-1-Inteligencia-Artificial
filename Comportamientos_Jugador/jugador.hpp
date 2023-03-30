@@ -28,6 +28,8 @@ class ComportamientoJugador : public Comportamiento{
       precipicios_pintados = false;
       bateriaMax = 5000;
       copiaTrasPosionamiento = false;
+      usarMatrizGrande = false;
+      filaMatrizNoPosicionado = columnaMatrizNoPosicionado = 99;
 
       vector<unsigned int> columnaMVP(size, 0);
       for(int i = 0; i < size; i++){
@@ -76,6 +78,9 @@ class ComportamientoJugador : public Comportamiento{
   bool precipicios_pintados;
   int bateriaMax;
   bool copiaTrasPosionamiento;
+  bool usarMatrizGrande;
+  int filaMatrizNoPosicionado;
+  int columnaMatrizNoPosicionado;
 
   vector< vector<unsigned int> > matrizVecesPasadas;
   vector< vector<unsigned char> > matrizNoPosicionado;

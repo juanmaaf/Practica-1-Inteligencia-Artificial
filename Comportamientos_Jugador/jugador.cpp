@@ -6,13 +6,6 @@ using namespace std;
 
 Action ComportamientoJugador::think(Sensores sensores){
 
-	// Pintamos los Precipicios -> 3 de anchcura en cada lado
-
-	if(!precipicios_pintados){
-		pintaPrecipicios(tamanio, mapaResultado);
-		precipicios_pintados = true;
-	}
-
 	Action accion = actIDLE;
 
 	cout << "Posicion: fila " << sensores.posF << " columna " << sensores.posC << " ";
@@ -91,6 +84,15 @@ Action ComportamientoJugador::think(Sensores sensores){
 		}
 	}
 
+	// Pintamos los Precipicios -> 3 de anchcura en cada lado
+
+	if(!precipicios_pintados){
+		pintaPrecipicios(tamanio, mapaResultado);
+		precipicios_pintados = true;
+	}
+
+	// Si se activa el sensor de Reinicio -> Inicializamos todo de nuevo
+
 	if(sensores.reset){
 		bien_situado = false;
 		tiene_zapatillas = false;
@@ -99,34 +101,48 @@ Action ComportamientoJugador::think(Sensores sensores){
 			reiniciaMatrizChar(tamanio*2 + 1, matrizNoPosicionado);
 			reiniciaMatrizInt(tamanio*2 +1, matrizVecesPasadasNoPosicionado);
 			copiaTrasPosionamiento = false;
+			usarMatrizGrande = false;
 		}
 	}
 	
-	if(sensores.nivel != 0 && !bien_situado){
+	// Si no estamos bien situados pintaremos en la matriz Doble, situándonos inicialmente en el centro
+
+	if(sensores.nivel != 0 && !bien_situado && !usarMatrizGrande){
 		current_state.fil = tamanio;
 		current_state.col = tamanio;
+		usarMatrizGrande = true;
 	}
 
-	if ((sensores.terreno[0] == 'G' and !bien_situado) || sensores.nivel == 0){
+	if(sensores.nivel == 0){
+		current_state.fil = sensores.posF;
+		current_state.col= sensores.posC;
+		current_state.brujula = sensores.sentido;
+		bien_situado = true;
+	}
+
+	if (sensores.terreno[0] == 'G' && !bien_situado  && sensores.nivel != 0){
+		// Para poder pintar en Mapa resultado todo lo recorrido sin estar posicionados, debemos almacenar
+		// la fila y columna en la que acabamos en la matriz doble + 1.
+
+		filaMatrizNoPosicionado = current_state.fil;
+		columnaMatrizNoPosicionado = current_state.col;
+
 		current_state.fil = sensores.posF;
 		current_state.col= sensores.posC;
 		current_state.brujula = sensores.sentido;
 		bien_situado = true;
 
-		if(sensores.nivel != 0 && !copiaTrasPosionamiento){
-			/*for(int i = 0; i < tamanio; i++){
+		if(!copiaTrasPosionamiento){
+			for(int i = 0; i < tamanio; i++){
 				for(int j = 0; j < tamanio; j++){
-					if(matrizNoPosicionado[i+tamanio][j+tamanio] != '?'){
-						mapaResultado[i][j] = matrizNoPosicionado[i+tamanio][j+tamanio];
+					if(matrizNoPosicionado[i+(filaMatrizNoPosicionado-current_state.fil)][j+(columnaMatrizNoPosicionado-current_state.col)] != '?'){
+						mapaResultado[i][j] = matrizNoPosicionado[i+(filaMatrizNoPosicionado-current_state.fil)][j+(columnaMatrizNoPosicionado-current_state.col)];
+					}
+					if(matrizVecesPasadasNoPosicionado[i+(filaMatrizNoPosicionado-current_state.fil)][j+(columnaMatrizNoPosicionado-current_state.col)] != 0){
+						matrizVecesPasadas[i][j] += matrizVecesPasadasNoPosicionado[i+(filaMatrizNoPosicionado-current_state.fil)][j+(columnaMatrizNoPosicionado-current_state.col)];
 					}
 				}
 			}
-
-			for(int i = 0; i < tamanio; i++){
-				for(int j = 0; j < tamanio; j++){
-					matrizVecesPasadas[i][j] += matrizVecesPasadasNoPosicionado[i+tamanio][j+tamanio];
-				}
-			}*/
 			copiaTrasPosionamiento = true;
 		}
 	}
@@ -204,7 +220,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 
 	last_action = accion;
 
-	printMatrizVecesPasadas(tamanio, matrizVecesPasadas);
+	//printMatrizVecesPasadas(tamanio, matrizVecesPasadas);
 
 	/*cout << endl << endl;
 
