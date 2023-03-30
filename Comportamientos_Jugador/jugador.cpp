@@ -96,6 +96,8 @@ Action ComportamientoJugador::think(Sensores sensores){
 		tiene_zapatillas = false;
 		tiene_bikini = false;
 		if(sensores.nivel != 0){
+			reiniciaMatrizChar(tamanio*2 + 1, matrizNoPosicionado);
+			reiniciaMatrizInt(tamanio*2 +1, matrizVecesPasadasNoPosicionado);
 			copiaTrasPosionamiento = false;
 		}
 	}
@@ -124,8 +126,8 @@ Action ComportamientoJugador::think(Sensores sensores){
 				for(int j = 0; j < tamanio; j++){
 					matrizVecesPasadas[i][j] += matrizVecesPasadasNoPosicionado[i+tamanio][j+tamanio];
 				}
-			}
-			copiaTrasPosionamiento = true;*/
+			}*/
+			copiaTrasPosionamiento = true;
 		}
 	}
 
@@ -394,5 +396,21 @@ void ComportamientoJugador::pintaVision(const state current_state, const vector<
 			matriz[current_state.fil - 1][current_state.col + 3] = terreno[14];
 			matriz[current_state.fil][current_state.col + 3] = terreno[15];
 		break;
+	}
+}
+
+void ComportamientoJugador::reiniciaMatrizChar(const int tam, vector< vector<unsigned char> > &matriz){
+	for(int i = 0; i < tam; i++){
+		for(int j = 0; j < tam; j++){
+			matriz[i][j] = '?';
+		}
+	}
+}
+
+void ComportamientoJugador::reiniciaMatrizInt(const int tam, vector< vector<unsigned int> > &matriz){
+	for(int i = 0; i < tam; i++){
+		for(int j = 0; j < tam; j++){
+			matriz[i][j] = 0;
+		}
 	}
 }

@@ -59,6 +59,9 @@ class ComportamientoJugador : public Comportamiento{
     void pintaPrecipicios(const int tam, vector< vector<unsigned char> > &matriz);
     void pintaVision(const state current_state, const vector<unsigned char> terreno, vector< vector<unsigned char> > &matriz);
 
+    void reiniciaMatrizChar(const int tam, vector< vector<unsigned char> > &matriz);
+    void reiniciaMatrizInt(const int tam, vector< vector<unsigned int> > &matriz);
+
   private:
   
   // Declarar aquí las variables de estado
