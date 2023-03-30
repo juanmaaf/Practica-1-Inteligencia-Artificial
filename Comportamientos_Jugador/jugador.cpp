@@ -99,6 +99,12 @@ Action ComportamientoJugador::think(Sensores sensores){
 			copiaTrasPosionamiento = false;
 		}
 	}
+	
+	if(sensores.nivel != 0 && !bien_situado){
+		current_state.fil = tamanio;
+		current_state.col = tamanio;
+		current_state.brujula = norte;
+	}
 
 	if ((sensores.terreno[0] == 'G' and !bien_situado) || sensores.nivel == 0){
 		current_state.fil = sensores.posF;
@@ -107,11 +113,20 @@ Action ComportamientoJugador::think(Sensores sensores){
 		bien_situado = true;
 
 		if(sensores.nivel != 0 && !copiaTrasPosionamiento){
-			
+			/*for(){
+				for(){
+
+				}
+			}
+
+			for(){
+				for(){
+
+				}
+			}*/
+			copiaTrasPosionamiento = true;
 		}
 	}
-
-
 
 	if (bien_situado){
 		contabilizaPasoPorCasilla(current_state, matrizVecesPasadas);
