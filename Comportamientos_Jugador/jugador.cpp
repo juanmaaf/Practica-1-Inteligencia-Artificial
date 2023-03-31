@@ -159,7 +159,9 @@ Action ComportamientoJugador::think(Sensores sensores){
 
 	paso_no_permitido = false;
 	if (sensores.superficie[2] == '_'){
+
 		accion = actFORWARD;
+
 		switch(sensores.terreno[2]){
 			// Los tipos no especificados no requieren condiciones
 			case 'B':
@@ -185,6 +187,8 @@ Action ComportamientoJugador::think(Sensores sensores){
 	}else{
 		paso_no_permitido = true;
 	}
+
+	
 
 	if(sensores.terreno[0] == 'X' && sensores.bateria != bateriaMax){
 		accion = actIDLE;
@@ -433,26 +437,8 @@ void ComportamientoJugador::reiniciaMatrizInt(const int tam, vector< vector<unsi
 	}
 }
 
-Action ComportamientoJugador::encontrarCasillasUtiles(const vector<unsigned char> terreno, vector< vector<unsigned char> > &matriz){
-	// Casillas:  X "Recarga" - D "Zapatillas" - K "Bikini"
+/*int ComportamientoJugador::encontrarCasillasUtiles(const vector<unsigned char> terreno, const unsigned char tipo){
+	// Casillas:  G "Posicionamiento" X "Recarga" - D "Zapatillas" - K "Bikini"
 
-	int id;
-	Action accion;
-
-	for(int i = 0; i < terreno.size(); i++){
-		if(terreno[i] == ('X' || 'D' || 'K')){
-			id = i;
-		}
-	}
-
-	if(id == (1 || 4 || 9)){
-		accion = actTURN_SL;
-	}
-	else if(id == (3 || 8 || 15)){
-		accion = actTURN_SR;
-	}
-	else{
-		accion = actFORWARD;
-	}
-	return accion;
-}
+	
+}*/
