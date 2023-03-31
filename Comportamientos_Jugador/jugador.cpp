@@ -146,6 +146,9 @@ Action ComportamientoJugador::think(Sensores sensores){
 		// SOLUCIONADO -> Faltaba línea 112 "current_state.brujula = norte"
 	}
 
+	// SI está bien situado. vamos a pintar en la matriz MapaResultado
+	// Si NO, pintaremos en la matriz AUXILIAR para, cuando nos situemos correctamente, poder pintar en la matriz original.
+	
 	if (bien_situado){
 		contabilizaPasoPorCasilla(current_state, matrizVecesPasadas);
 		pintaVision(current_state, sensores.terreno, mapaResultado);
@@ -248,14 +251,14 @@ void ComportamientoJugador::printMatrizVecesPasadas(const int tam, vector< vecto
 	}
 }
 
-/*void ComportamientoJugador::printMatrizNoPosicionado(const int tam, vector< vector<unsigned char> > &matriz){
+void ComportamientoJugador::printMatrizNoPosicionado(const int tam, vector< vector<unsigned char> > &matriz){
 	for(int i = 0; i < tam*2 + 1; i++){
 		for(int j = 0; j < tam*2 +1; j++){
 			cout << matriz[i][j];
 		}
 		cout << endl;
 	}
-}*/
+}
 
 void ComportamientoJugador::pintaPrecipicios(const int tam, vector< vector<unsigned char> > &matriz){
 	for(int i = 0; i < tam; i++){
