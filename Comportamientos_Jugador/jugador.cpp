@@ -100,7 +100,6 @@ Action ComportamientoJugador::think(Sensores sensores){
 		if(sensores.nivel != 0){
 			reiniciaMatrizChar(tamanio*2 + 1, matrizNoPosicionado);
 			reiniciaMatrizInt(tamanio*2 +1, matrizVecesPasadasNoPosicionado);
-			copiaTrasPosionamiento = false;
 			usarMatrizGrande = false;
 		}
 	}
@@ -110,6 +109,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 	if(sensores.nivel != 0 && !bien_situado && !usarMatrizGrande){
 		current_state.fil = tamanio;
 		current_state.col = tamanio;
+		current_state.brujula = norte;
 		usarMatrizGrande = true;
 	}
 
@@ -119,8 +119,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 		current_state.brujula = sensores.sentido;
 		bien_situado = true;
 	}
-
-	if (sensores.terreno[0] == 'G' && !bien_situado  && sensores.nivel != 0){
+	else if (sensores.terreno[0] == 'G' && !bien_situado){
 		// Para poder pintar en Mapa resultado todo lo recorrido sin estar posicionados, debemos almacenar
 		// la fila y columna en la que acabamos en la matriz doble + 1.
 
@@ -131,9 +130,8 @@ Action ComportamientoJugador::think(Sensores sensores){
 		current_state.col= sensores.posC;
 		current_state.brujula = sensores.sentido;
 		bien_situado = true;
-
-		if(!copiaTrasPosionamiento){
-			for(int i = 0; i < tamanio; i++){
+		
+		for(int i = 0; i < tamanio; i++){
 				for(int j = 0; j < tamanio; j++){
 					if(matrizNoPosicionado[i+(filaMatrizNoPosicionado-current_state.fil)][j+(columnaMatrizNoPosicionado-current_state.col)] != '?'){
 						mapaResultado[i][j] = matrizNoPosicionado[i+(filaMatrizNoPosicionado-current_state.fil)][j+(columnaMatrizNoPosicionado-current_state.col)];
@@ -142,9 +140,10 @@ Action ComportamientoJugador::think(Sensores sensores){
 						matrizVecesPasadas[i][j] += matrizVecesPasadasNoPosicionado[i+(filaMatrizNoPosicionado-current_state.fil)][j+(columnaMatrizNoPosicionado-current_state.col)];
 					}
 				}
-			}
-			copiaTrasPosionamiento = true;
 		}
+
+		//Tenemos un error. No nos pinta bien después de un RESET 
+		// SOLUCIONADO -> Faltaba línea 112 "current_state.brujula = norte"
 	}
 
 	if (bien_situado){
