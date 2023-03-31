@@ -433,8 +433,26 @@ void ComportamientoJugador::reiniciaMatrizInt(const int tam, vector< vector<unsi
 	}
 }
 
-void ComportamientoJugador::buscarCasillaEspecial(const state c_state, const vector<unsigned char> terreno, vector< vector<unsigned char> > &matriz){
+Action ComportamientoJugador::encontrarCasillasUtiles(const vector<unsigned char> terreno, vector< vector<unsigned char> > &matriz){
 	// Casillas:  X "Recarga" - D "Zapatillas" - K "Bikini"
 
-	
+	int id;
+	Action accion;
+
+	for(int i = 0; i < terreno.size(); i++){
+		if(terreno[i] == ('X' || 'D' || 'K')){
+			id = i;
+		}
+	}
+
+	if(id == (1 || 4 || 9)){
+		accion = actTURN_SL;
+	}
+	else if(id == (3 || 8 || 15)){
+		accion = actTURN_SR;
+	}
+	else{
+		accion = actFORWARD;
+	}
+	return accion;
 }
