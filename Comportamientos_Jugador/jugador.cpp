@@ -157,12 +157,35 @@ Action ComportamientoJugador::think(Sensores sensores){
 		pintaVision(current_state, sensores.terreno, matrizNoPosicionado);
 	}
 
+	// MOVIMIENTO
+
+	if(!bien_situado){
+		encontrarCasillaUtil(sensores.terreno, 'G', accion);
+	}
+	else{
+		if(!tiene_bikini){
+			encontrarCasillaUtil(sensores.terreno, 'K', accion);
+		} else if (!tiene_zapatillas){
+			encontrarCasillaUtil(sensores.terreno, 'D', accion);
+		} else{
+			encontrarCasillaUtil(sensores.terreno, 'X', accion);
+		}
+	}
+
+	if(accion == actFORWARD){
+		desplazamientoElegido = 2;
+	}else if(accion == actTURN_SL){
+		desplazamientoElegido = 1;
+	}else{
+		desplazamientoElegido = 3;
+	}
+
 	paso_no_permitido = false;
-	if (sensores.superficie[2] == '_'){
+	if (sensores.superficie[desplazamientoElegido] == '_'){
 
 		accion = actFORWARD;
 
-		switch(sensores.terreno[2]){
+		switch(sensores.terreno[desplazamientoElegido]){
 			// Los tipos no especificados no requieren condiciones - Para los muros, ya tenemos el sensor de colisión
 			case 'B':
 				if(!tiene_zapatillas && last_action == actFORWARD){
@@ -436,5 +459,21 @@ void ComportamientoJugador::reiniciaMatrizInt(const int tam, vector< vector<unsi
 		for(int j = 0; j < tam; j++){
 			matriz[i][j] = 0;
 		}
+	}
+}
+
+void ComportamientoJugador::encontrarCasillaUtil(const vector<unsigned char> terreno, const char tipo, Action &accion){
+	int numero;
+	for(int i = 0; i < terreno.size(); i++){
+		if(terreno[i] == tipo){
+			numero = i;
+		}
+	}
+	if(numero == 1 || numero == 4 || numero == 9){
+		accion = actTURN_SL;
+	} else if(numero == 3 || numero == 8 || numero == 15){
+		accion = actTURN_SR;
+	} else{
+		accion = actFORWARD;
 	}
 }
