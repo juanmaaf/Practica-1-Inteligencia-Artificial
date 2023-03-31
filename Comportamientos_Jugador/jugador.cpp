@@ -436,9 +436,3 @@ void ComportamientoJugador::reiniciaMatrizInt(const int tam, vector< vector<unsi
 		}
 	}
 }
-
-/*int ComportamientoJugador::encontrarCasillasUtiles(const vector<unsigned char> terreno, const unsigned char tipo){
-	// Casillas:  G "Posicionamiento" X "Recarga" - D "Zapatillas" - K "Bikini"
-
-	
-}*/

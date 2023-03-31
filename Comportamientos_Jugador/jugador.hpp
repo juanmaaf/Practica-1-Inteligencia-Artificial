@@ -29,7 +29,6 @@ class ComportamientoJugador : public Comportamiento{
       bateriaMax = 5000;
       usarMatrizGrande = false;
       filaMatrizNoPosicionado = columnaMatrizNoPosicionado = 99;
-      //paso_elegido = 0;
 
       vector<unsigned int> columnaMVP(size, 0);
       for(int i = 0; i < size; i++){
@@ -64,8 +63,6 @@ class ComportamientoJugador : public Comportamiento{
     void reiniciaMatrizChar(const int tam, vector< vector<unsigned char> > &matriz);
     void reiniciaMatrizInt(const int tam, vector< vector<unsigned int> > &matriz);
 
-    //int encontrarCasillasUtiles(const vector<unsigned char> terreno, const unsigned char tipo);
-
   private:
   
   // Declarar aquí las variables de estado
@@ -82,7 +79,6 @@ class ComportamientoJugador : public Comportamiento{
   bool usarMatrizGrande;
   int filaMatrizNoPosicionado;
   int columnaMatrizNoPosicionado;
-  //int paso_elegido;
 
   vector< vector<unsigned int> > matrizVecesPasadas;
   vector< vector<unsigned char> > matrizNoPosicionado;
