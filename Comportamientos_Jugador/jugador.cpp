@@ -183,7 +183,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 	paso_no_permitido = false;
 	if (sensores.superficie[desplazamientoElegido] == '_'){
 
-		accion = actFORWARD;
+		//accion = actFORWARD;
 
 		switch(sensores.terreno[desplazamientoElegido]){
 			// Los tipos no especificados no requieren condiciones - Para los muros, ya tenemos el sensor de colisión
