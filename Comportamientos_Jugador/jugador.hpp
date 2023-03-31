@@ -63,6 +63,8 @@ class ComportamientoJugador : public Comportamiento{
     void reiniciaMatrizChar(const int tam, vector< vector<unsigned char> > &matriz);
     void reiniciaMatrizInt(const int tam, vector< vector<unsigned int> > &matriz);
 
+    void buscarCasillaEspecial(const state c_state, const vector<unsigned char> terreno, vector< vector<unsigned char> > &matriz);
+
   private:
   
   // Declarar aquí las variables de estado

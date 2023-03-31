@@ -148,7 +148,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 
 	// SI está bien situado. vamos a pintar en la matriz MapaResultado
 	// Si NO, pintaremos en la matriz AUXILIAR para, cuando nos situemos correctamente, poder pintar en la matriz original.
-	
+
 	if (bien_situado){
 		contabilizaPasoPorCasilla(current_state, matrizVecesPasadas);
 		pintaVision(current_state, sensores.terreno, mapaResultado);
@@ -431,4 +431,10 @@ void ComportamientoJugador::reiniciaMatrizInt(const int tam, vector< vector<unsi
 			matriz[i][j] = 0;
 		}
 	}
+}
+
+void ComportamientoJugador::buscarCasillaEspecial(const state c_state, const vector<unsigned char> terreno, vector< vector<unsigned char> > &matriz){
+	// Casillas:  X "Recarga" - D "Zapatillas" - K "Bikini"
+
+	
 }
