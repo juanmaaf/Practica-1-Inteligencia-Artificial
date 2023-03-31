@@ -163,7 +163,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 		accion = actFORWARD;
 
 		switch(sensores.terreno[2]){
-			// Los tipos no especificados no requieren condiciones
+			// Los tipos no especificados no requieren condiciones - Para los muros, ya tenemos el sensor de colisión
 			case 'B':
 				if(!tiene_zapatillas && last_action == actFORWARD){
 					paso_no_permitido = true;
@@ -185,15 +185,16 @@ Action ComportamientoJugador::think(Sensores sensores){
 			break;
 		}
 	}else{
+		// Hay un Aldeano o un Lobo -> No se puede avanzar a esa casilla -> PASO NO PERMITIDO
 		paso_no_permitido = true;
 	}
 
-	
-
+	// Si estamos en la casilla de Recarga, nos quedamos hasta que se recargue completamente
 	if(sensores.terreno[0] == 'X' && sensores.bateria != bateriaMax){
 		accion = actIDLE;
 	}
 
+	// PASO NO PERMITIDO -> Movimiento Aleatorio - ¿NO ALEATORIO?
 	if(paso_no_permitido or sensores.reset){
 		int eleccion = rand()%4;
 		switch(eleccion){
@@ -212,6 +213,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 		}
 	}
 
+	//Colisión por MURO
 	if(sensores.colision){
 		int elec = rand()%4;
 		switch(elec){
