@@ -31,7 +31,6 @@ class ComportamientoJugador : public Comportamiento{
       filaMatrizNoPosicionado = columnaMatrizNoPosicionado = 99;
       desplazamientoElegido = 0;
       casillaEspecialEncontrada = false;
-      hayMurosEnVision = false;
 
       vector<unsigned int> columnaMVP(size, 0);
       for(int i = 0; i < size; i++){
@@ -68,7 +67,6 @@ class ComportamientoJugador : public Comportamiento{
 
     void encontrarCasillaUtil(const vector<unsigned char> terreno, const char tipo, Action &accion, bool &casillaEspecialEncontrada);
     void elegirMovimiento(const vector< vector<unsigned int> > matriz, Action &accion);
-    void existenMurosEnVision(const vector<unsigned char> terreno, bool &hayMurosEnVision);
 
   private:
   
@@ -88,7 +86,6 @@ class ComportamientoJugador : public Comportamiento{
   int columnaMatrizNoPosicionado;
   int desplazamientoElegido;
   bool casillaEspecialEncontrada;
-  bool hayMurosEnVision;
 
   vector< vector<unsigned int> > matrizVecesPasadas;
   vector< vector<unsigned char> > matrizNoPosicionado;

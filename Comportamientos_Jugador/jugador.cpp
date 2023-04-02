@@ -162,7 +162,6 @@ Action ComportamientoJugador::think(Sensores sensores){
 	// Buscamos una casilla especial en función de la Visión
 	
 	casillaEspecialEncontrada = false;
-	existenMurosEnVision(sensores.terreno, hayMurosEnVision);
 
 	if(!bien_situado){
 		encontrarCasillaUtil(sensores.terreno, 'G', accion, casillaEspecialEncontrada);
@@ -184,23 +183,20 @@ Action ComportamientoJugador::think(Sensores sensores){
 		}else{
 			desplazamientoElegido = 3;
 		}
-	} else if(hayMurosEnVision){ // Intentamos implemetar el paso por el hueco de los muros
-			if((sensores.terreno[1] != 'M' && sensores.terreno[3] != 'M' && sensores.terreno[2] != 'M') || (sensores.terreno[1] == 'M' && sensores.terreno[3] == 'M' && sensores.terreno[2] != 'M')){
-				desplazamientoElegido = 2;
-				accion = actFORWARD;
-			}else if(sensores.terreno[1] != 'M' && sensores.terreno[5] == 'M' && sensores.terreno[2] == 'M'){
+	} else{ //Podemos tener que atravesar por un hueco, sea de muros o precipicios dentro del mapa. Caso de MUROS
+			if(sensores.terreno[1] != 'M' && sensores.terreno[5] == 'M' && (current_state.brujula == norte || current_state.brujula == sur || current_state.brujula == este || current_state.brujula == oeste)){
 				desplazamientoElegido = 1;
 				accion = actTURN_SL;
-			} else if(sensores.terreno[3] != 'M' && sensores.terreno[7] == 'M' && sensores.terreno[2] == 'M'){
+			}else if(sensores.terreno[3] != 'M' && sensores.terreno[7] == 'M' && (current_state.brujula == norte || current_state.brujula == sur || current_state.brujula == este || current_state.brujula == oeste)){
 				desplazamientoElegido = 3;
 				accion = actTURN_SR;
-			} else{
-				desplazamientoElegido = 2;
-				accion = actFORWARD;
+			} else if(sensores.terreno[1] != 'P' && sensores.terreno[5] == 'P' && (current_state.brujula == norte || current_state.brujula == sur || current_state.brujula == este || current_state.brujula == oeste)){
+				desplazamientoElegido = 1;
+				accion = actTURN_SL;
+			} else if(sensores.terreno[3] != 'P' && sensores.terreno[7] == 'P' && (current_state.brujula == norte || current_state.brujula == sur || current_state.brujula == este || current_state.brujula == oeste)){
+				desplazamientoElegido = 3;
+				accion = actTURN_SR;
 			}
-	} else{
-		desplazamientoElegido = 2;
-		accion = actFORWARD;
 	}
 	
 	paso_no_permitido = false;
@@ -251,15 +247,6 @@ Action ComportamientoJugador::think(Sensores sensores){
 
 	last_action = accion;
 
-	//printMatrizVecesPasadas(tamanio, matrizVecesPasadas);
-
-	/*cout << endl << endl;
-
-	if(sensores.nivel != 0){
-		printMatrizNoPosicionado(tamanio, matrizNoPosicionado);
-	}*/
-
-	// Determinar el efecto de la ultima accion enviada
 	return accion;
 }
 
@@ -534,13 +521,5 @@ void ComportamientoJugador::elegirMovimiento(const vector< vector<unsigned int> 
 			break;
 		}
 		break;
-	}
-}
-
-void ComportamientoJugador::existenMurosEnVision(const vector<unsigned char> terreno, bool &hayMurosEnVision){
-	for(int i = 0; i < terreno.size(); i++){
-		if(terreno[i] == 'M'){
-			hayMurosEnVision = true;
-		}
 	}
 }
