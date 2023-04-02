@@ -162,8 +162,13 @@ Action ComportamientoJugador::think(Sensores sensores){
 	// Buscamos una casilla especial en función de la Visión
 	
 	casillaEspecialEncontrada = false;
+	brujulaNSOE = false;
 
-	if(!bien_situado){
+	if(current_state.brujula == norte || current_state.brujula == sur || current_state.brujula == este || current_state.brujula == oeste){
+		brujulaNSOE = true;
+	}
+
+	if(!bien_situado){ // Máxima Prioridad a Posicionarse, para pintar lo más rápido posible en Matriz Resultado
 		encontrarCasillaUtil(sensores.terreno, 'G', accion, casillaEspecialEncontrada);
 	}
 	if(!tiene_bikini && !casillaEspecialEncontrada){
@@ -184,18 +189,25 @@ Action ComportamientoJugador::think(Sensores sensores){
 			desplazamientoElegido = 3;
 		}
 	} else{ //Podemos tener que atravesar por un hueco, sea de muros o precipicios dentro del mapa. Caso de MUROS
-			if(sensores.terreno[1] != 'M' && sensores.terreno[5] == 'M' && (current_state.brujula == norte || current_state.brujula == sur || current_state.brujula == este || current_state.brujula == oeste)){
+			if(sensores.terreno[1] != 'M' && sensores.terreno[5] == 'M' && brujulaNSOE){
 				desplazamientoElegido = 1;
 				accion = actTURN_SL;
-			}else if(sensores.terreno[3] != 'M' && sensores.terreno[7] == 'M' && (current_state.brujula == norte || current_state.brujula == sur || current_state.brujula == este || current_state.brujula == oeste)){
+			} else if(sensores.terreno[3] != 'M' && sensores.terreno[7] == 'M' && brujulaNSOE){
 				desplazamientoElegido = 3;
 				accion = actTURN_SR;
-			} else if(sensores.terreno[1] != 'P' && sensores.terreno[5] == 'P' && (current_state.brujula == norte || current_state.brujula == sur || current_state.brujula == este || current_state.brujula == oeste)){
+			} 
+			
+			// Caso de Precipicios -> Importante para exámen. Puede haber huecos de precipicios como de muros
+			else if(sensores.terreno[1] != 'P' && sensores.terreno[5] == 'P' && brujulaNSOE){
 				desplazamientoElegido = 1;
 				accion = actTURN_SL;
-			} else if(sensores.terreno[3] != 'P' && sensores.terreno[7] == 'P' && (current_state.brujula == norte || current_state.brujula == sur || current_state.brujula == este || current_state.brujula == oeste)){
+			} else if(sensores.terreno[3] != 'P' && sensores.terreno[7] == 'P' && brujulaNSOE){
 				desplazamientoElegido = 3;
 				accion = actTURN_SR;
+			}
+			else{ //Default -> Que tire Recto
+				desplazamientoElegido = 2;
+				accion = actFORWARD;
 			}
 	}
 	
