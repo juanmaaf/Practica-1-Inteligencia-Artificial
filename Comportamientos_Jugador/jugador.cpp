@@ -159,27 +159,50 @@ Action ComportamientoJugador::think(Sensores sensores){
 
 	// MOVIMIENTO
 
+	// Buscamos una casilla especial en función de la Visión
+	
+	casillaEspecialEncontrada = false;
+	existenMurosEnVision(sensores.terreno, hayMurosEnVision);
+
 	if(!bien_situado){
-		encontrarCasillaUtil(sensores.terreno, 'G', accion);
+		encontrarCasillaUtil(sensores.terreno, 'G', accion, casillaEspecialEncontrada);
 	}
-	else{
-		if(!tiene_bikini){
-			encontrarCasillaUtil(sensores.terreno, 'K', accion);
-		} else if (!tiene_zapatillas){
-			encontrarCasillaUtil(sensores.terreno, 'D', accion);
-		} else{
-			encontrarCasillaUtil(sensores.terreno, 'X', accion);
+	if(!tiene_bikini && !casillaEspecialEncontrada){
+		encontrarCasillaUtil(sensores.terreno, 'K', accion, casillaEspecialEncontrada);
+	} 
+	if (!tiene_zapatillas && !casillaEspecialEncontrada){
+		encontrarCasillaUtil(sensores.terreno, 'D', accion, casillaEspecialEncontrada);
+	} 
+	if(!casillaEspecialEncontrada){
+		encontrarCasillaUtil(sensores.terreno, 'X', accion, casillaEspecialEncontrada);
+	}
+	if(casillaEspecialEncontrada){
+		if(accion == actFORWARD){
+			desplazamientoElegido = 2;
+		}else if(accion == actTURN_SL){
+			desplazamientoElegido = 1;
+		}else{
+			desplazamientoElegido = 3;
 		}
-	}
-
-	if(accion == actFORWARD){
+	} else if(hayMurosEnVision){ // Intentamos implemetar el paso por el hueco de los muros
+			if((sensores.terreno[1] != 'M' && sensores.terreno[3] != 'M' && sensores.terreno[2] != 'M') || (sensores.terreno[1] == 'M' && sensores.terreno[3] == 'M' && sensores.terreno[2] != 'M')){
+				desplazamientoElegido = 2;
+				accion = actFORWARD;
+			}else if(sensores.terreno[1] != 'M' && sensores.terreno[5] == 'M' && sensores.terreno[2] == 'M'){
+				desplazamientoElegido = 1;
+				accion = actTURN_SL;
+			} else if(sensores.terreno[3] != 'M' && sensores.terreno[7] == 'M' && sensores.terreno[2] == 'M'){
+				desplazamientoElegido = 3;
+				accion = actTURN_SR;
+			} else{
+				desplazamientoElegido = 2;
+				accion = actFORWARD;
+			}
+	} else{
 		desplazamientoElegido = 2;
-	}else if(accion == actTURN_SL){
-		desplazamientoElegido = 1;
-	}else{
-		desplazamientoElegido = 3;
+		accion = actFORWARD;
 	}
-
+	
 	paso_no_permitido = false;
 	if (sensores.superficie[desplazamientoElegido] == '_'){
 
@@ -188,7 +211,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 		switch(sensores.terreno[desplazamientoElegido]){
 			// Los tipos no especificados no requieren condiciones - Para los muros, ya tenemos el sensor de colisión
 			case 'B':
-				if(!tiene_zapatillas && last_action == actFORWARD){
+				if(!tiene_zapatillas){
 					paso_no_permitido = true;
 				}
 			break;
@@ -217,35 +240,12 @@ Action ComportamientoJugador::think(Sensores sensores){
 		accion = actIDLE;
 	}
 
-	// PASO NO PERMITIDO -> Movimiento Aleatorio - ¿NO ALEATORIO?
-	if(paso_no_permitido or sensores.reset){
-		int eleccion = rand()%4;
-		switch(eleccion){
-			case 0:
-				accion = actTURN_SL;
-			break;
-			case 1:
-				accion = actTURN_SR;
-			break;
-			case 2:
-				accion = actTURN_BL;
-			break;
-			case 3:
-				accion = actTURN_BR;
-			break;
-		}
-	}
-
-	//Colisión por MURO
-	if(sensores.colision){
-		int elec = rand()%4;
-		switch(elec){
-			case 0:
-				accion = actTURN_BL;
-			break;
-			case 1:
-				accion = actTURN_BR;
-			break;
+	// PASO NO PERMITIDO o Colisión Por Muro o RESET-> Movimiento Aleatorio - ¿NO ALEATORIO?
+	else if(paso_no_permitido or sensores.reset or sensores.colision){
+		if(bien_situado){
+				elegirMovimiento(matrizVecesPasadas, accion);
+		} else{
+				elegirMovimiento(matrizVecesPasadasNoPosicionado, accion);
 		}
 	}
 
@@ -462,11 +462,12 @@ void ComportamientoJugador::reiniciaMatrizInt(const int tam, vector< vector<unsi
 	}
 }
 
-void ComportamientoJugador::encontrarCasillaUtil(const vector<unsigned char> terreno, const char tipo, Action &accion){
+void ComportamientoJugador::encontrarCasillaUtil(const vector<unsigned char> terreno, const char tipo, Action &accion, bool &casillaEspecialEncontrada){
 	int numero;
 	for(int i = 0; i < terreno.size(); i++){
 		if(terreno[i] == tipo){
 			numero = i;
+			casillaEspecialEncontrada = true;
 		}
 	}
 	if(numero == 1 || numero == 4 || numero == 9){
@@ -475,5 +476,71 @@ void ComportamientoJugador::encontrarCasillaUtil(const vector<unsigned char> ter
 		accion = actTURN_SR;
 	} else{
 		accion = actFORWARD;
+	}
+}
+
+void ComportamientoJugador::elegirMovimiento(const vector< vector<unsigned int> > matriz, Action &accion){
+	Action auxiliar = accion;
+	int eleccion = rand()%4;
+	switch(auxiliar){
+		case actFORWARD:
+			//Movimiento, cualquiera menos actForward
+			switch(eleccion){
+			case 0:
+				accion = actTURN_SL;
+			break;
+			case 1:
+				accion = actTURN_SR;
+			break;
+			case 2:
+				accion = actTURN_BL;
+			break;
+			case 3:
+				accion = actTURN_BR;
+			break;
+		}
+		break;
+		case actTURN_SL:
+			//Movimiento, cualquiera menos actTurnSL
+			switch(eleccion){
+			case 0:
+				accion = actFORWARD;
+			break;
+			case 1:
+				accion = actTURN_SR;
+			break;
+			case 2:
+				accion = actTURN_BL;
+			break;
+			case 3:
+				accion = actTURN_BR;
+			break;
+		}
+		break;
+		case actTURN_SR:
+			//Movimiento, cualquiera menos actTurnSR
+			switch(eleccion){
+			case 0:
+				accion = actTURN_SL;
+			break;
+			case 1:
+				accion = actFORWARD;
+			break;
+			case 2:
+				accion = actTURN_BL;
+			break;
+			case 3:
+				accion = actTURN_BR;
+			break;
+		}
+		break;
+	}
+}
+
+void ComportamientoJugador::existenMurosEnVision(const vector<unsigned char> terreno, bool &hayMurosEnVision){
+	for(int i = 0; i < terreno.size(); i++){
+		if(terreno[i] == 'M'){
+			hayMurosEnVision = true;
+		}
 	}
 }
