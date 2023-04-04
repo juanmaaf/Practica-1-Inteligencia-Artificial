@@ -479,7 +479,7 @@ void ComportamientoJugador::encontrarCasillaUtil(const vector<unsigned char> ter
 }
 
 void ComportamientoJugador::elegirMovimiento(const vector< vector<unsigned int> > matriz, const state current_state, Action &accion){
-
+	//elegirMovimientoAleatorio(accion);
 	Action auxiliar = accion;
 
 	int sumaCuadrante1 = 0;
@@ -627,7 +627,6 @@ void ComportamientoJugador::elegirMovimiento(const vector< vector<unsigned int> 
 				elegirMovimientoAleatorio(accion);
 			}
 		break;
-
 	}
 }
 
