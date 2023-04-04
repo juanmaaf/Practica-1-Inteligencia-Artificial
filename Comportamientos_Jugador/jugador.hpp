@@ -27,6 +27,7 @@ class ComportamientoJugador : public Comportamiento{
       tamanio = size;
       precipicios_pintados = false;
       bateriaMax = 5000;
+      umbralRecarga = 4500;
       usarMatrizGrande = false;
       filaMatrizNoPosicionado = columnaMatrizNoPosicionado = 99;
       desplazamientoElegido = 0;
@@ -48,6 +49,8 @@ class ComportamientoJugador : public Comportamiento{
         matrizVecesPasadasNoPosicionado.push_back(columnaMVPNP);
       }
 
+      vector<int> sumaCuadrantes(4, 0);
+
     }
 
     ComportamientoJugador(const ComportamientoJugador & comport) : Comportamiento(comport){}
@@ -67,7 +70,8 @@ class ComportamientoJugador : public Comportamiento{
     void reiniciaMatrizInt(const int tam, vector< vector<unsigned int> > &matriz);
 
     void encontrarCasillaUtil(const vector<unsigned char> terreno, const char tipo, Action &accion, bool &casillaEspecialEncontrada);
-    void elegirMovimiento(const vector< vector<unsigned int> > matriz, Action &accion);
+    void elegirMovimiento(const vector< vector<unsigned int> > matriz, const state current_state, Action &accion);
+    void elegirMovimientoAleatorio(Action &action);
 
   private:
   
@@ -82,6 +86,7 @@ class ComportamientoJugador : public Comportamiento{
   int tamanio;
   bool precipicios_pintados;
   int bateriaMax;
+  int umbralRecarga;
   bool usarMatrizGrande;
   int filaMatrizNoPosicionado;
   int columnaMatrizNoPosicionado;
@@ -92,6 +97,8 @@ class ComportamientoJugador : public Comportamiento{
   vector< vector<unsigned int> > matrizVecesPasadas;
   vector< vector<unsigned char> > matrizNoPosicionado;
   vector< vector<unsigned int> > matrizVecesPasadasNoPosicionado;
+
+  vector<int> sumaCuadrantes;
 };
 
 #endif

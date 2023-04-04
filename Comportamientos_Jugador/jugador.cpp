@@ -205,7 +205,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 				desplazamientoElegido = 3;
 				accion = actTURN_SR;
 			}
-			else{ //Default -> Que tire Recto
+			else{ //Default -> TIRA RECTO
 				desplazamientoElegido = 2;
 				accion = actFORWARD;
 			}
@@ -219,7 +219,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 		switch(sensores.terreno[desplazamientoElegido]){
 			// Los tipos no especificados no requieren condiciones - Para los muros, ya tenemos el sensor de colisión
 			case 'B':
-				if(!tiene_zapatillas){
+				if(!tiene_zapatillas || last_action == actFORWARD){
 					paso_no_permitido = true;
 				}
 			break;
@@ -244,16 +244,16 @@ Action ComportamientoJugador::think(Sensores sensores){
 	}
 
 	// Si estamos en la casilla de Recarga, nos quedamos hasta que se recargue completamente
-	if(sensores.terreno[0] == 'X' && sensores.bateria != bateriaMax){
+	if(sensores.terreno[0] == 'X' && sensores.bateria != bateriaMax && sensores.bateria < umbralRecarga){
 		accion = actIDLE;
 	}
 
 	// PASO NO PERMITIDO o Colisión Por Muro o RESET-> Movimiento Aleatorio - ¿NO ALEATORIO?
 	else if(paso_no_permitido or sensores.reset or sensores.colision){
 		if(bien_situado){
-				elegirMovimiento(matrizVecesPasadas, accion);
+				elegirMovimiento(matrizVecesPasadas, current_state, accion);
 		} else{
-				elegirMovimiento(matrizVecesPasadasNoPosicionado, accion);
+				elegirMovimiento(matrizVecesPasadasNoPosicionado, current_state, accion);
 		}
 	}
 
@@ -478,7 +478,160 @@ void ComportamientoJugador::encontrarCasillaUtil(const vector<unsigned char> ter
 	}
 }
 
-void ComportamientoJugador::elegirMovimiento(const vector< vector<unsigned int> > matriz, Action &accion){
+void ComportamientoJugador::elegirMovimiento(const vector< vector<unsigned int> > matriz, const state current_state, Action &accion){
+
+	Action auxiliar = accion;
+
+	int sumaCuadrante1 = 0;
+	int sumaCuadrante2 = 0;
+	int sumaCuadrante3 = 0;
+	int sumaCuadrante4 = 0;
+
+	for(int i = 0; i < current_state.fil; i++){
+		for(int j = 0; j < current_state.col; j++){
+			sumaCuadrante1 += matriz[i][j];
+		}
+	}
+	for(int i = 0; i < current_state.fil; i++){
+		for(int j = current_state.col + 1; j < matriz[0].size(); j++){
+			sumaCuadrante2 += matriz[i][j];
+		}
+	}
+	for(int i = current_state.fil + 1; i < matriz[0].size(); i++){
+		for(int j = 0; j < current_state.col; j++){
+			sumaCuadrante3 += matriz[i][j];
+		}
+	}
+	for(int i = current_state.fil + 1; i < matriz[0].size(); i++){
+		for(int j = current_state.col + 1; j < matriz[0].size(); j++){
+			sumaCuadrante4 += matriz[i][j];
+		}
+	}
+	sumaCuadrantes.push_back(sumaCuadrante1);
+	sumaCuadrantes.push_back(sumaCuadrante2);
+	sumaCuadrantes.push_back(sumaCuadrante3);
+	sumaCuadrantes.push_back(sumaCuadrante4);
+
+	int menor = sumaCuadrante1;
+	int idMenor = 1;
+
+	for(int i = 1; i < sumaCuadrantes.size(); i++){
+		if(sumaCuadrantes[i] < menor){
+			menor = sumaCuadrantes[i];
+			idMenor = i + 1;
+		}
+	}
+
+	switch(current_state.brujula){
+		case norte:
+			if(idMenor == 1 && auxiliar != actTURN_SL){
+				accion = actTURN_SL;
+			} else if(idMenor == 2 && auxiliar != actTURN_SR){
+				accion = actTURN_SR;
+			} else if(idMenor == 3 && auxiliar != actTURN_BL){
+				accion = actTURN_BL;
+			} else if(idMenor == 4 && auxiliar != actTURN_BR){
+				accion = actTURN_BR;
+			} else{
+				elegirMovimientoAleatorio(accion);
+			}
+		break;
+		case noreste:
+			if(idMenor == 1 && auxiliar != actTURN_SL){
+				accion = actTURN_SL;
+			} else if(idMenor == 2 && auxiliar != actFORWARD){
+				accion = actFORWARD;
+			} else if(idMenor == 3 && auxiliar != actTURN_BL){
+				accion = actTURN_BL;
+			} else if(idMenor == 4 && auxiliar != actTURN_SR){
+				accion = actTURN_SR;
+			} else{
+				elegirMovimientoAleatorio(accion);
+			}
+		break;
+		case este:
+			if(idMenor == 1 && auxiliar != actTURN_BL){
+				accion = actTURN_BL;
+			} else if(idMenor == 2 && auxiliar != actTURN_SL){
+				accion = actTURN_SL;
+			} else if(idMenor == 3 && auxiliar != actTURN_BR){
+				accion = actTURN_BR;
+			} else if(idMenor == 4 && auxiliar != actTURN_SR){
+				accion = actTURN_SR;
+			} else{
+				elegirMovimientoAleatorio(accion);
+			}
+		break;
+		case sureste:
+			if(idMenor == 1 && auxiliar != actTURN_BR){
+				actTURN_BR;
+			} else if(idMenor == 2 && auxiliar != actTURN_SL){
+				actTURN_SL;
+			} else if(idMenor == 3 && auxiliar != actTURN_SR){
+				actTURN_SR;
+			} else if(idMenor == 4 && auxiliar != actFORWARD){
+				accion = actFORWARD;
+			} else{
+				elegirMovimientoAleatorio(accion);
+			}
+		break;
+		case sur:
+			if(idMenor == 1 && auxiliar != actTURN_BR){
+				accion = actTURN_BR;
+			} else if(idMenor == 2 && auxiliar != actTURN_BL){
+				accion = actTURN_BL;
+			} else if(idMenor == 3 && auxiliar != actTURN_SR){
+				accion = actTURN_SR;
+			} else if(idMenor == 4 && auxiliar != actTURN_SL){
+				accion = actTURN_SL;
+			} else{
+				elegirMovimientoAleatorio(accion);
+			}
+		break;
+		case suroeste:
+			if(idMenor == 1 && auxiliar != actTURN_SR){
+				accion = actTURN_SR;
+			} else if(idMenor == 2 && auxiliar != actTURN_BR){
+				accion = actTURN_BR;
+			} else if(idMenor == 3 && auxiliar != actFORWARD){
+				accion = actFORWARD;
+			} else if(idMenor == 4 && auxiliar != actTURN_SL){ 
+				accion = actTURN_SL;
+			} else{
+				elegirMovimientoAleatorio(accion);
+			}
+		break;
+		case oeste:
+			if(idMenor == 1 && auxiliar != actTURN_SR){
+				accion = actTURN_SR;
+			} else if(idMenor == 2 && auxiliar != actTURN_BR){
+				accion = actTURN_BR;
+			} else if(idMenor == 3 && auxiliar != actTURN_SL){
+				accion = actTURN_SL;
+			} else if(idMenor == 4 && auxiliar != actTURN_BL){
+				accion = actTURN_BL;
+			} else{
+				elegirMovimientoAleatorio(accion);
+			}
+		break;
+		case noroeste:
+			if(idMenor == 1 && auxiliar != actFORWARD){
+				accion = actFORWARD;
+			} else if(idMenor == 2 && auxiliar != actTURN_SR){
+				accion = actTURN_SR;
+			} else if(idMenor == 3 && auxiliar != actTURN_SL){
+				accion = actTURN_SL;
+			} else if(idMenor == 4 && auxiliar != actTURN_BL){
+				accion = actTURN_BL;
+			} else{
+				elegirMovimientoAleatorio(accion);
+			}
+		break;
+
+	}
+}
+
+void ComportamientoJugador::elegirMovimientoAleatorio(Action &accion){
 	Action auxiliar = accion;
 	int eleccion = rand()%4;
 	switch(auxiliar){
