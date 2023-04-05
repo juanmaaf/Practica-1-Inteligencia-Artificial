@@ -219,7 +219,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 		switch(sensores.terreno[desplazamientoElegido]){
 			// Los tipos no especificados no requieren condiciones - Para los muros, ya tenemos el sensor de colisión
 			case 'B':
-				if(!tiene_zapatillas || last_action == actFORWARD){
+				if((!tiene_zapatillas || last_action == actFORWARD) /*&& (sensores.terreno[desplazamientoElegido + 3] == 'B' && sensores.terreno[desplazamientoElegido + 4] == 'B' && sensores.terreno[desplazamientoElegido + 5] == 'B')*/){
 					paso_no_permitido = true;
 				}
 			break;
@@ -244,16 +244,18 @@ Action ComportamientoJugador::think(Sensores sensores){
 	}
 
 	// Si estamos en la casilla de Recarga, nos quedamos hasta que se recargue completamente
-	if(sensores.terreno[0] == 'X' && sensores.bateria != bateriaMax && sensores.bateria < umbralRecarga){
+	if(sensores.terreno[0] == 'X' && sensores.bateria != bateriaMax){
 		accion = actIDLE;
 	}
 
 	// PASO NO PERMITIDO o Colisión Por Muro o RESET-> Movimiento Aleatorio - ¿NO ALEATORIO?
 	else if(paso_no_permitido or sensores.reset or sensores.colision){
 		if(bien_situado){
-				elegirMovimiento(matrizVecesPasadas, current_state, accion);
+				//elegirMovimiento(matrizVecesPasadas, current_state, accion);
+				elegirMovimientoAleatorio(accion);
 		} else{
-				elegirMovimiento(matrizVecesPasadasNoPosicionado, current_state, accion);
+				//elegirMovimiento(matrizVecesPasadasNoPosicionado, current_state, accion);
+				elegirMovimientoAleatorio(accion);
 		}
 	}
 
@@ -479,7 +481,6 @@ void ComportamientoJugador::encontrarCasillaUtil(const vector<unsigned char> ter
 }
 
 void ComportamientoJugador::elegirMovimiento(const vector< vector<unsigned int> > matriz, const state current_state, Action &accion){
-	//elegirMovimientoAleatorio(accion);
 	Action auxiliar = accion;
 
 	int sumaCuadrante1 = 0;
@@ -521,7 +522,7 @@ void ComportamientoJugador::elegirMovimiento(const vector< vector<unsigned int> 
 			idMenor = i + 1;
 		}
 	}
-
+	/*
 	switch(current_state.brujula){
 		case norte:
 			if(idMenor == 1 && auxiliar != actTURN_SL){
@@ -627,6 +628,101 @@ void ComportamientoJugador::elegirMovimiento(const vector< vector<unsigned int> 
 				elegirMovimientoAleatorio(accion);
 			}
 		break;
+	}
+	*/
+	switch(current_state.brujula){
+		case norte:
+			if(idMenor == 1){
+				accion = actTURN_SL;
+			} else if(idMenor == 2){
+				accion = actTURN_SR;
+			} else if(idMenor == 3){
+				accion = actTURN_BL;
+			} else{
+				accion = actTURN_BR;
+			}
+		break;
+		case noreste:
+			if(idMenor == 1){
+				accion = actTURN_SL;
+			} else if(idMenor == 2){
+				accion = actFORWARD;
+			} else if(idMenor == 3){
+				accion = actTURN_BL;
+			} else{
+				accion = actTURN_SR;
+			}
+		break;
+		case este:
+			if(idMenor == 1){
+				accion = actTURN_BL;
+			} else if(idMenor == 2){
+				accion = actTURN_SL;
+			} else if(idMenor == 3){
+				accion = actTURN_BR;
+			} else{
+				accion = actTURN_SR;
+			}
+		break;
+		case sureste:
+			if(idMenor == 1){
+				actTURN_BR;
+			} else if(idMenor == 2){
+				actTURN_SL;
+			} else if(idMenor == 3){
+				actTURN_SR;
+			} else{
+				accion = actFORWARD;
+			}
+		break;
+		case sur:
+			if(idMenor == 1){
+				accion = actTURN_BR;
+			} else if(idMenor == 2){
+				accion = actTURN_BL;
+			} else if(idMenor == 3){
+				accion = actTURN_SR;
+			} else{
+				accion = actTURN_SL;
+			}
+		break;
+		case suroeste:
+			if(idMenor == 1){
+				accion = actTURN_SR;
+			} else if(idMenor == 2){
+				accion = actTURN_BR;
+			} else if(idMenor == 3){
+				accion = actFORWARD;
+			} else{ 
+				accion = actTURN_SL;
+			}
+		break;
+		case oeste:
+			if(idMenor == 1){
+				accion = actTURN_SR;
+			} else if(idMenor == 2){
+				accion = actTURN_BR;
+			} else if(idMenor == 3){
+				accion = actTURN_SL;
+			} else{
+				accion = actTURN_BL;
+			}
+		break;
+		case noroeste:
+			if(idMenor == 1){
+				accion = actFORWARD;
+			} else if(idMenor == 2){
+				accion = actTURN_SR;
+			} else if(idMenor == 3){
+				accion = actTURN_SL;
+			} else{
+				accion = actTURN_BL;
+			} 
+		break;
+	}
+
+	if(accion == auxiliar){
+		elegirMovimientoAleatorio(accion);
 	}
 }
 

@@ -27,7 +27,6 @@ class ComportamientoJugador : public Comportamiento{
       tamanio = size;
       precipicios_pintados = false;
       bateriaMax = 5000;
-      umbralRecarga = 4500;
       usarMatrizGrande = false;
       filaMatrizNoPosicionado = columnaMatrizNoPosicionado = 99;
       desplazamientoElegido = 0;
@@ -86,7 +85,6 @@ class ComportamientoJugador : public Comportamiento{
   int tamanio;
   bool precipicios_pintados;
   int bateriaMax;
-  int umbralRecarga;
   bool usarMatrizGrande;
   int filaMatrizNoPosicionado;
   int columnaMatrizNoPosicionado;
