@@ -250,6 +250,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 
 	// PASO NO PERMITIDO o Colisión Por Muro o RESET-> Movimiento Aleatorio - ¿NO ALEATORIO?
 	else if(paso_no_permitido or sensores.reset or sensores.colision){
+		// Finalmente me he decantado por el movimiento aleatorio porque no he conseguido una buena implementación del movimiento hacia las casillas menos visitadas
 		if(bien_situado){
 				//elegirMovimiento(matrizVecesPasadas, current_state, accion);
 				elegirMovimientoAleatorio(accion);
@@ -481,6 +482,7 @@ void ComportamientoJugador::encontrarCasillaUtil(const vector<unsigned char> ter
 }
 
 void ComportamientoJugador::elegirMovimiento(const vector< vector<unsigned int> > matriz, const state current_state, Action &accion){
+	// En este método intento implementar el desvío hacia las casillas no visitadas -> No consigo hacerlo
 	Action auxiliar = accion;
 
 	int sumaCuadrante1 = 0;
@@ -522,6 +524,8 @@ void ComportamientoJugador::elegirMovimiento(const vector< vector<unsigned int> 
 			idMenor = i + 1;
 		}
 	}
+	//Intento de implementaciópn de los cuadrantes
+
 	/*
 	switch(current_state.brujula){
 		case norte:
