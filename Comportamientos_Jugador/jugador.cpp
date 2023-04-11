@@ -119,20 +119,23 @@ Action ComportamientoJugador::think(Sensores sensores){
 		current_state.brujula = sensores.sentido;
 		bien_situado = true;
 	}
-	else if (sensores.terreno[0] == 'G' && !bien_situado){
-		// Para poder pintar en Mapa resultado todo lo recorrido sin estar posicionados, debemos almacenar
-		// la fila y columna en la que acabamos en la matriz doble + 1.
+	else{
+		if (sensores.terreno[0] == 'G' && !bien_situado){
+			// Para poder pintar en Mapa resultado todo lo recorrido sin estar posicionados, debemos almacenar
+			// la fila y columna en la que acabamos en la matriz doble + 1.
 
-		filaMatrizNoPosicionado = current_state.fil;
-		columnaMatrizNoPosicionado = current_state.col;
+			filaMatrizNoPosicionado = current_state.fil;
+			columnaMatrizNoPosicionado = current_state.col;
 
-		current_state.fil = sensores.posF;
-		current_state.col= sensores.posC;
-		current_state.brujula = sensores.sentido;
-		bien_situado = true;
+			current_state.fil = sensores.posF;
+			current_state.col= sensores.posC;
+			current_state.brujula = sensores.sentido;
+			bien_situado = true;
 		
-		for(int i = 0; i < tamanio; i++){
+			for(int i = 0; i < tamanio; i++){
 				for(int j = 0; j < tamanio; j++){
+					// De esta forma pintamos en las matrices mapaResultado y matrizVecesPasadas lo acumulado mientras no se está bien posicionado
+					// Sin que 
 					if(matrizNoPosicionado[i+(filaMatrizNoPosicionado-current_state.fil)][j+(columnaMatrizNoPosicionado-current_state.col)] != '?'){
 						mapaResultado[i][j] = matrizNoPosicionado[i+(filaMatrizNoPosicionado-current_state.fil)][j+(columnaMatrizNoPosicionado-current_state.col)];
 					}
@@ -140,10 +143,11 @@ Action ComportamientoJugador::think(Sensores sensores){
 						matrizVecesPasadas[i][j] += matrizVecesPasadasNoPosicionado[i+(filaMatrizNoPosicionado-current_state.fil)][j+(columnaMatrizNoPosicionado-current_state.col)];
 					}
 				}
-		}
+			}
 
 		//Tenemos un error. No nos pinta bien después de un RESET 
-		// SOLUCIONADO -> Faltaba línea 112 "current_state.brujula = norte"
+		// SOLUCIONADO -> Faltaba línea 112 "current_state.brujula = norte", y además había que incluir las condiciones en los ifs anteriores
+		}
 	}
 
 	// SI está bien situado. vamos a pintar en la matriz MapaResultado
@@ -163,6 +167,11 @@ Action ComportamientoJugador::think(Sensores sensores){
 	
 	casillaEspecialEncontrada = false;
 	brujulaNSOE = false;
+
+	// Esta variable nos servirá más tarde. A la hora de intentar pasar por los huecos de muros y precipicios
+	// ¿Por qué considero únicamente NSOE?
+	// Probando con todas la direcciones posibles, generaba bucles infinitos en las diagonales -> Giro a la Izqierda - Giro a la derecha o viceversa
+	// Sin parar
 
 	if(current_state.brujula == norte || current_state.brujula == sur || current_state.brujula == este || current_state.brujula == oeste){
 		brujulaNSOE = true;
@@ -188,24 +197,19 @@ Action ComportamientoJugador::think(Sensores sensores){
 		}else{
 			desplazamientoElegido = 3;
 		}
-	} else{ //Podemos tener que atravesar por un hueco, sea de muros o precipicios dentro del mapa. Caso de MUROS
-			if(sensores.terreno[1] != 'M' && sensores.terreno[5] == 'M' && brujulaNSOE){
+	} else{ // Podemos tener que atravesar por un hueco, sea de muros o precipicios dentro del mapa. Empleamos la variable explicada anteriormente
+			// Jugamos con la visión. Si tenemos un hueco a la izquierda o derecha y en la siguiente posición hay un muro o precipicio, giraremos en ese sentido
+			// El caso de que estemos estudiando muros y haya un precipicio en ese hueco o viceversa se ha tenido en cuenta. Posteriormente analizamos
+			// la posición a la que vamos y se denegará el paso si no es permitido.
+			if(((sensores.terreno[1] != 'M' && sensores.terreno[5] == 'M') || (sensores.terreno[1] != 'P' && sensores.terreno[5] == 'P')) && brujulaNSOE){
 				desplazamientoElegido = 1;
 				accion = actTURN_SL;
-			} else if(sensores.terreno[3] != 'M' && sensores.terreno[7] == 'M' && brujulaNSOE){
-				desplazamientoElegido = 3;
-				accion = actTURN_SR;
-			} 
-			
-			// Caso de Precipicios -> Importante para exámen. Puede haber huecos de precipicios como de muros
-			else if(sensores.terreno[1] != 'P' && sensores.terreno[5] == 'P' && brujulaNSOE){
-				desplazamientoElegido = 1;
-				accion = actTURN_SL;
-			} else if(sensores.terreno[3] != 'P' && sensores.terreno[7] == 'P' && brujulaNSOE){
+			} else if(((sensores.terreno[3] != 'M' && sensores.terreno[7] == 'M') || (sensores.terreno[3] != 'P' && sensores.terreno[7] == 'P')) && brujulaNSOE){
 				desplazamientoElegido = 3;
 				accion = actTURN_SR;
 			}
-			else{ //Default -> TIRA RECTO
+			else{
+				//Default -> TIRA RECTO
 				desplazamientoElegido = 2;
 				accion = actFORWARD;
 			}
@@ -219,12 +223,22 @@ Action ComportamientoJugador::think(Sensores sensores){
 		switch(sensores.terreno[desplazamientoElegido]){
 			// Los tipos no especificados no requieren condiciones - Para los muros, ya tenemos el sensor de colisión
 			case 'B':
-				if((!tiene_zapatillas || last_action == actFORWARD) /*&& (sensores.terreno[desplazamientoElegido + 3] == 'B' && sensores.terreno[desplazamientoElegido + 4] == 'B' && sensores.terreno[desplazamientoElegido + 5] == 'B')*/){
+				/*if(sensores.reset){
+					if(sensores.terreno[desplazamientoElegido + 3] == 'B' && sensores.terreno[desplazamientoElegido + 4] == 'B' && sensores.terreno[desplazamientoElegido + 5] == 'B'){
+						paso_no_permitido = true;
+					}
+				}
+				else*/ if((!tiene_zapatillas || last_action == actFORWARD)){
 					paso_no_permitido = true;
 				}
 			break;
 			case 'A':
-				if(!tiene_bikini){
+				/*if(sensores.reset){
+					if(sensores.terreno[desplazamientoElegido + 3] == 'A' && sensores.terreno[desplazamientoElegido + 4] == 'A' && sensores.terreno[desplazamientoElegido + 5] == 'A'){
+						paso_no_permitido = true;
+					}
+				}
+				else*/ if(!tiene_bikini){
 					paso_no_permitido = true;
 				}
 			break;
@@ -464,22 +478,26 @@ void ComportamientoJugador::reiniciaMatrizInt(const int tam, vector< vector<unsi
 	}
 }
 
-void ComportamientoJugador::encontrarCasillaUtil(const vector<unsigned char> terreno, const char tipo, Action &accion, bool &casillaEspecialEncontrada){
+void ComportamientoJugador::encontrarCasillaUtil(const vector<unsigned char> terreno, const char tipo, Action &accion, bool &casillaUtilEncontrada){
 	int numero;
 	for(int i = 0; i < terreno.size(); i++){
 		if(terreno[i] == tipo){
 			numero = i;
-			casillaEspecialEncontrada = true;
+			casillaUtilEncontrada = true;
 		}
 	}
-	if(numero == 1 || numero == 4 || numero == 9){
-		accion = actTURN_SL;
-	} else if(numero == 3 || numero == 8 || numero == 15){
-		accion = actTURN_SR;
-	} else{
-		accion = actFORWARD;
+	if(casillaUtilEncontrada){
+		if(numero == 1 || numero == 4 || numero == 9){
+			accion = actTURN_SL;
+		} else if(numero == 3 || numero == 8 || numero == 15){
+			accion = actTURN_SR;
+		} else{
+			accion = actFORWARD;
+		}
 	}
 }
+
+// En este método intento evitar el movimiento aleatorio, pero finalmente no lo he conseguido
 
 void ComportamientoJugador::elegirMovimiento(const vector< vector<unsigned int> > matriz, const state current_state, Action &accion){
 	// En este método intento implementar el desvío hacia las casillas no visitadas -> No consigo hacerlo

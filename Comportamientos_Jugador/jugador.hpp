@@ -31,6 +31,7 @@ class ComportamientoJugador : public Comportamiento{
       filaMatrizNoPosicionado = columnaMatrizNoPosicionado = 99;
       desplazamientoElegido = 0;
       casillaEspecialEncontrada = false;
+      casillaSueloEncontrada = false;
       brujulaNSOE = false;
 
       vector<unsigned int> columnaMVP(size, 0);
@@ -68,7 +69,7 @@ class ComportamientoJugador : public Comportamiento{
     void reiniciaMatrizChar(const int tam, vector< vector<unsigned char> > &matriz);
     void reiniciaMatrizInt(const int tam, vector< vector<unsigned int> > &matriz);
 
-    void encontrarCasillaUtil(const vector<unsigned char> terreno, const char tipo, Action &accion, bool &casillaEspecialEncontrada);
+    void encontrarCasillaUtil(const vector<unsigned char> terreno, const char tipo, Action &accion, bool &casillaUtilEncontrada);
     void elegirMovimiento(const vector< vector<unsigned int> > matriz, const state current_state, Action &accion);
     void elegirMovimientoAleatorio(Action &action);
 
@@ -90,6 +91,7 @@ class ComportamientoJugador : public Comportamiento{
   int columnaMatrizNoPosicionado;
   int desplazamientoElegido;
   bool casillaEspecialEncontrada;
+  bool casillaSueloEncontrada;
   bool brujulaNSOE;
 
   vector< vector<unsigned int> > matrizVecesPasadas;
